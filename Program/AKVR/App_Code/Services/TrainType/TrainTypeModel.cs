@@ -1,7 +1,7 @@
 ﻿namespace AKVR.Services.TrainType
 {
 
-    public class Model
+    public class TrainTypeModel
     {
         // string   Junatyypin nimi
         public string name { get; set; }

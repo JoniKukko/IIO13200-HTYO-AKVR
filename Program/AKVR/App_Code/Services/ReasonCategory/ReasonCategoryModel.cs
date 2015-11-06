@@ -1,7 +1,7 @@
 ﻿namespace AKVR.Services.ReasonCategory
 {
 
-    public class Model
+    public class ReasonCategoryModel
     {
         //  string   Syyluokan tunnus
         public string categoryCode { get; set; }

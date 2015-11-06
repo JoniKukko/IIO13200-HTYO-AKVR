@@ -4,7 +4,7 @@ namespace AKVR.Services.Train
 {
     
 
-    public class Model
+    public class TrainModel
     {
         // 1-99999  Junan numero. Esim junan "IC 59" junanumero on 59
         public int trainNumber { get; set; }

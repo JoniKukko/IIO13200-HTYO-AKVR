@@ -1,7 +1,7 @@
 ﻿namespace AKVR.Services.TrackSection
 {
 
-    public class Model
+    public class TrackSectionModel
     {
         // Raideosuuden liikennepaikan lyhenne. 
         // Lista liikennepaikoista löytyy täältä.

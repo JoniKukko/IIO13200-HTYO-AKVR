@@ -3,7 +3,7 @@
 namespace AKVR.Services.Assembly
 {
 
-    public class Model
+    public class AssemblyModel
     {
         // 1-99999   Junan numero. Esim junan "IC 59" junanumero on 59
         public int trainNumber { get; set; }

@@ -1,7 +1,7 @@
 ﻿namespace AKVR.Services.ReasonCode
 {
 
-    public class Model
+    public class ReasonCodeModel
     {
         // string   Syykoodin tunnus
         public string detailedCategoryCode { get; set; }

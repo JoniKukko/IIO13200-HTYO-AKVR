@@ -1,7 +1,7 @@
 ﻿namespace AKVR.Services.Operator
 {
 
-    public class Model
+    public class OperatorModel
     {
         // positive integer  Operaattorin yksilöivä tunnus
         public int id { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace AKVR.Services.TrafficLocation
 {
-    class Model
+    class TrafficLocationModel
     {
         // boolean   Onko liikennepaikalla kaupallista matkustajaliikennettä
         public bool passengerTraffic { get; set; }

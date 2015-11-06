@@ -2,7 +2,7 @@
 
 namespace AKVR.Services.AccessInformationMessage
 {
-    public class Model
+    public class AccessInformationMessageModel
     {
         //  positive integer  Kulkutietoviestin yksilöivä numero.
         public int id { get; set; }
