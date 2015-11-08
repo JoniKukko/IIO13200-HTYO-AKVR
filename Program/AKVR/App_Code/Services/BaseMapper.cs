@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Web.Configuration;
 
 namespace AKVR.Services
 {
@@ -12,7 +13,8 @@ namespace AKVR.Services
 
 
         private bool fromWeb { get; set; }
-        private string VRbaseurl = "http://rata.digitraffic.fi/api/v1/";
+        private string VRbaseurl = WebConfigurationManager.AppSettings["VRpath"];
+        private string Localbaseurl = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\JSON\\";
 
 
 
@@ -82,7 +84,7 @@ namespace AKVR.Services
                 string url = pattern.Replace(address, "-");
 
                 // kasataan koko path kuntoon
-                string path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\JSON\\" + url + ".json";
+                string path = this.Localbaseurl + url + ".json";
 
                 // ladataan tiedoston sisältö
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from LOCAL (" + path + ")");
