@@ -12,7 +12,7 @@ public partial class TEST : System.Web.UI.Page
         // jos factoryn metodille antaa truen niin saa väliaikaisesti fromWebin päälle
         // Factorystä löytyy myös pysyvä asetus sille, sen pitäis ehkä olla jossain web.configissa oikeasti
         TrainService trainService = ServiceFactory.Train(true);
-        TrainModel train = trainService.Select(1);
+        TrainModel train = trainService.SelectByTrainNumber(1);
 
         try
         {

@@ -22,9 +22,9 @@ namespace AKVR.Services.Train
 
         // nothing special to do..
         // passing method call to mapper
-        public TrainModel Select(int id)
+        public TrainModel SelectByTrainNumber(int trainNumber)
         {
-            return this.Mapper.Select(id);
+            return this.Mapper.SelectByTrainNumber(trainNumber);
         }
 
 

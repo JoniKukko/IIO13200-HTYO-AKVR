@@ -13,7 +13,7 @@ namespace AKVR.Services.Train
         
 
         
-        public TrainModel Select(int trainNumber)
+        public TrainModel SelectByTrainNumber(int trainNumber)
         {
             // palautusarvo
             TrainModel train;
