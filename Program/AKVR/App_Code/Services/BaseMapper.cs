@@ -12,19 +12,11 @@ namespace AKVR.Services
     {
 
 
-        private bool fromWeb { get; set; }
+        private bool fromWeb = (WebConfigurationManager.AppSettings["AKVRproduction"] == "true");
         private string VRbaseurl = WebConfigurationManager.AppSettings["VRpath"];
         private string Localbaseurl = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\JSON\\";
 
-
-
-        public BaseMapper(bool fromWeb)
-        {
-            this.fromWeb = fromWeb;
-        }
-
-
-
+        
         // vr näyttää palauttavan paljon taulukkona joten
         // simppeli metodi karsimaan se YMPÄRILTÄ pois mikäli
         // halutaan vain yksittäinen

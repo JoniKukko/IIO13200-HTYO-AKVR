@@ -6,16 +6,10 @@ namespace AKVR.Services
     public static class ServiceFactory
     {
 
-        // false = development
-        // true = production
-        // maybe this should be in web.config or something
-        private const bool fromWebDefault = false;
-        
-
-        public static TrainService Train(bool fromWeb = fromWebDefault)
+        public static TrainService Train()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Train.Service");
-            return new TrainService(new TrainMapper(fromWeb));
+            return new TrainService(new TrainMapper());
         }
 
         

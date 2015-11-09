@@ -8,10 +8,6 @@ namespace AKVR.Services.Train
 
     public class TrainMapper : BaseMapper
     {
-        // this has to be in every mapper (and BaseMapper parent also)
-        public TrainMapper(bool fromWeb) : base(fromWeb) { }
-        
-
         
         public TrainModel SelectByTrainNumber(int trainNumber)
         {
