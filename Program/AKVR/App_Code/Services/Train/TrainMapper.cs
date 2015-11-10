@@ -9,24 +9,21 @@ namespace AKVR.Services.Train
 
     public class TrainMapper : BaseMapper
     {
-        
 
 
+        // Palauttaa mallin junanumeron perusteella
         public TrainModel SelectByTrainNumber(int trainNumber)
         {
             // palautusarvo
             TrainModel train;
-
             try
             {
-                Debug.WriteLine("AKVR:TrainMapper:SelectByTrainNumber(" + trainNumber.ToString()+")");
-
+                Debug.WriteLine("AKVR:TrainMapper:SelectByTrainNumber(" + trainNumber.ToString() + ")");
                 // Haetaan json
                 string json = this.getJSON("live-trains/" + trainNumber.ToString(), false);
-
                 // yritetään deserialisoida
                 train = JsonConvert.DeserializeObject<TrainModel>(json);
-                
+
             }
             catch (Exception ex)
             {
@@ -34,26 +31,22 @@ namespace AKVR.Services.Train
                 // palautetaan ainakin tyhjä sitten..
                 train = new TrainModel();
             }
-            
             return train;
         }
 
 
+
+        // palauttaa malli listan aseman lyhenteellä
         public List<TrainModel> SelectByStationShortCode(string stationShortCode)
         {
-            // palautusarvo
             List<TrainModel> trains;
-
             try
             {
-                Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode+")");
-
+                Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode + ")");
                 // Haetaan json
                 string json = this.getJSON("live-trains?station=" + stationShortCode, true);
-
                 // yritetään deserialisoida
                 trains = JsonConvert.DeserializeObject<List<TrainModel>>(json);
-
             }
             catch (Exception ex)
             {
@@ -61,12 +54,11 @@ namespace AKVR.Services.Train
                 // palautetaan ainakin tyhjä sitten..
                 trains = new List<TrainModel>();
             }
-
             return trains;
         }
 
 
     }
 
-    
+
 }
