@@ -35,7 +35,7 @@ namespace AKVR.Services.Train
         public bool cancelled { get; set; }
 
         //  positive integer   Versionumero, jossa juna on viimeksi muuttunut
-        public int version { get; set; }
+        public long version { get; set; }
 
         // Kuvaa saapumisia ja lähtöjä liikennepaikoilta. 
         // Järjestetty reitin mukaiseen järjestykseen.
@@ -87,7 +87,7 @@ namespace AKVR.Services.Train
 
         // Syytiedot. Kuvaavat syitä miksi juna oli myöhässä tai 
         // etuajassa pysähdyksellä. Kaikkia syyluokkia ja -tietoja ei julkaista.
-        public CategoryCode causes { get; set; }
+        public CategoryCode[] causes { get; set; }
 
     }
 
