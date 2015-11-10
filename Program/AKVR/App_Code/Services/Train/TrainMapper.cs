@@ -20,8 +20,7 @@ namespace AKVR.Services.Train
 
                 // Haetaan json
                 string json = this.getJSON("live-trains/" + trainNumber.ToString());
-                // poistetaan taulukko ympäriltä
-                json = this.stripArray(json);
+
                 // yritetään deserialisoida
                 train = JsonConvert.DeserializeObject<TrainModel>(json);
                 
