@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace AKVR.Services.Train
@@ -25,6 +26,14 @@ namespace AKVR.Services.Train
         public TrainModel SelectByTrainNumber(int trainNumber)
         {
             return this.Mapper.SelectByTrainNumber(trainNumber);
+        }
+
+
+        // nothing special to do..
+        // passing method call to mapper
+        public List<TrainModel> SelectByStationShortCode(string stationShortCode)
+        {
+            return this.Mapper.SelectByStationShortCode(stationShortCode);
         }
 
 

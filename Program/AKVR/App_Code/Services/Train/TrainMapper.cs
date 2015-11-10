@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AKVR.Services.Train
@@ -9,6 +10,8 @@ namespace AKVR.Services.Train
     public class TrainMapper : BaseMapper
     {
         
+
+
         public TrainModel SelectByTrainNumber(int trainNumber)
         {
             // palautusarvo
@@ -16,7 +19,7 @@ namespace AKVR.Services.Train
 
             try
             {
-                Debug.WriteLine("AKVR:TrainMapper:Select - Trying to get train by trainNumber " + trainNumber);
+                Debug.WriteLine("AKVR:TrainMapper:SelectByTrainNumber(" + trainNumber.ToString()+")");
 
                 // Haetaan json
                 string json = this.getJSON("live-trains/" + trainNumber.ToString(), false);
@@ -27,7 +30,7 @@ namespace AKVR.Services.Train
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("AKVR:TrainMapper:Select - FAILED: " + ex.Message);
+                Debug.WriteLine("AKVR:TrainMapper:SelectByTrainNumber(" + trainNumber.ToString() + ") - FAILED: " + ex.Message);
                 // palautetaan ainakin tyhjä sitten..
                 train = new TrainModel();
             }
@@ -35,7 +38,34 @@ namespace AKVR.Services.Train
             return train;
         }
 
-        
+
+        public List<TrainModel> SelectByStationShortCode(string stationShortCode)
+        {
+            // palautusarvo
+            List<TrainModel> trains;
+
+            try
+            {
+                Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode+")");
+
+                // Haetaan json
+                string json = this.getJSON("live-trains?station=" + stationShortCode, true);
+
+                // yritetään deserialisoida
+                trains = JsonConvert.DeserializeObject<List<TrainModel>>(json);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode + ") FAILED: " + ex.Message);
+                // palautetaan ainakin tyhjä sitten..
+                trains = new List<TrainModel>();
+            }
+
+            return trains;
+        }
+
+
     }
 
     
