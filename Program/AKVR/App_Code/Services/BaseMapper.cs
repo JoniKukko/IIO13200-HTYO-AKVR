@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Configuration;
+using System.Web;
 
 namespace AKVR.Services
 {
+
+    struct SessionStorageModel
+    {
+        public DateTime validTo;
+        public string json;
+    }
 
     public abstract class BaseMapper : WebClient
     {
@@ -15,16 +23,28 @@ namespace AKVR.Services
         private bool fromWeb = (WebConfigurationManager.AppSettings["AKVRproduction"] == "true");
         private string VRbaseurl = WebConfigurationManager.AppSettings["VRpath"];
         private string Localbaseurl = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\JSON\\";
+        private static Dictionary<string, SessionStorageModel> SessionStorage {
+            get
+            {
+                if (HttpContext.Current.Session["SessionStorage"] == null)
+                {
+                    Debug.WriteLine("AKVR:BaseMapper - New SessionStorage");
+                    HttpContext.Current.Session["SessionStorage"] = new Dictionary<string, SessionStorageModel>();
+                }
+                return (Dictionary<string, SessionStorageModel>)HttpContext.Current.Session["SessionStorage"];
+            }
+        }
 
         
 
         // hakee jsonin annetusta urlista
-        protected string getJSON(string address, bool returnArray = true)
+        protected string getJSON(string address, bool returnArray = true, int cacheTime = 10)
         {
-            string json = (this.fromWeb)
-                ? this.DownloadFromWeb(address)
-                : this.DownloadFromLocal(address);
-
+            string json = this.checkSessionStorage(address)
+                ? this.DownloadFromSessionStorage(address)
+                : this.fromWeb
+                    ? this.DownloadFromWeb(address, cacheTime)
+                    : this.DownloadFromLocal(address);
             
             if (json.Length < 5)
             {
@@ -32,18 +52,54 @@ namespace AKVR.Services
                 // just to make sure there is something
                 json = "{}";
             }
-            
+
             return (returnArray) ? this.addArray(json) : this.stripArray(json);
         }
 
 
 
+        private bool checkSessionStorage(string address)
+        {
+            // true jos avain löytyy ja avaimen validTo on alle nykyinen hetki
+            bool value = (SessionStorage.ContainsKey(address) && SessionStorage[address].validTo > DateTime.Now);
+
+            // jos false niin poistetaan avain.
+            if (!value)
+            {
+                SessionStorage.Remove(address);
+            }
+
+            return value;
+        }
+
+
+
+        // hakee jsonin sessionista
+        private string DownloadFromSessionStorage(string address)
+        {
+            Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from SESSIONSTORAGE");
+            return SessionStorage[address].json;
+        }
+
+
+
+        private void addToSessionStorage(string address, string json, int cacheTime)
+        {
+            SessionStorageModel newSessionStorageModel;
+            newSessionStorageModel.json = json;
+            newSessionStorageModel.validTo = DateTime.Now.AddSeconds(cacheTime);
+            SessionStorage.Add(address, newSessionStorageModel);
+        }
+
+
+
         // hakee jsonin webistä
-        private string DownloadFromWeb(string address)
+        private string DownloadFromWeb(string address, int cacheTime)
         {
             string json = "";
 
-            try {
+            try
+            {
 
                 // kasataan path
                 string path = VRbaseurl + address;
@@ -51,23 +107,27 @@ namespace AKVR.Services
                 // ladataan tiedoston sisältö
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB (" + path + ")");
                 json = base.DownloadString(path);
-                
-            } catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB FAILED: " + ex.Message);
             }
 
+            this.addToSessionStorage(address, json, cacheTime);
+            
             return json;
         }
-
-
+        
+        
 
         // hakee jsonin localista
         private string DownloadFromLocal(string address)
         {
             string json = "";
 
-            try {
+            try
+            {
 
                 // merkit / ja = ja ? vaihdetaan merkkiin -
                 Regex pattern = new Regex("/|=|\\?");
@@ -80,7 +140,8 @@ namespace AKVR.Services
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from LOCAL (" + path + ")");
                 json = File.ReadAllText(path);
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from LOCAL FAILED: " + ex.Message);
             }
