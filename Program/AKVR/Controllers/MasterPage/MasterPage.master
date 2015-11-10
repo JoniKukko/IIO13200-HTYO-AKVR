@@ -8,38 +8,40 @@
     <!--<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css' />-->
     <link href="../../Styles/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="../../Styles/css/mastercss.css" rel="stylesheet" type="text/css" />
-    <asp:ContentPlaceHolder id="head" runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
-              <ul class="nav nav-sidebar">
-                <li><asp:Image ImageUrl="~/Images/logo.JPG" runat="server" /></li>
-                <li class="active"><a href="../../etusivu">Etusivu <span class="sr-only">(current)</span></a></li>
-                <li><a href="../../junat">Junat</a></li>
-                <li><a href="#">Asemat</a></li>
-                <li><a href="#">Tilastot</a></li>
-              </ul>
+        <div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-3 col-md-2 sidebar">
+                        <ul class="nav nav-sidebar">
+                            <li>
+                                <asp:Image CssClass="logo-image" ImageUrl="~/Images/logo.JPG" runat="server" />
+                            </li>
+                            <li><a href="../../etusivu">Etusivu</a></li>
+                            <li><a href="../../junat">Junat</a></li>
+                            <li><a href="#">Asemat</a></li>
+                            <li><a href="#">Tilastot</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-offset-2 main">
+                    <div class="row">
+                        <asp:ContentPlaceHolder ID="mainContentHolder" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-        <div class="col-md-offset-2 main">
-            <div class="row">
-                <asp:ContentPlaceHolder id="mainContentHolder" runat="server">
-                </asp:ContentPlaceHolder>
-            </div>
-        </div>
-    </div>
     </form>
 
-<!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="../../Styles/js/bootstrap.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+    <!--<script src="../../Styles/js/bootstrap.min.js"></script>-->
 </body>
 </html>
