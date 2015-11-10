@@ -19,7 +19,7 @@ namespace AKVR.Services.Train
                 Debug.WriteLine("AKVR:TrainMapper:Select - Trying to get train by trainNumber " + trainNumber);
 
                 // Haetaan json
-                string json = this.getJSON("live-trains/" + trainNumber.ToString());
+                string json = this.getJSON("live-trains/" + trainNumber.ToString(), false);
 
                 // yritetään deserialisoida
                 train = JsonConvert.DeserializeObject<TrainModel>(json);
