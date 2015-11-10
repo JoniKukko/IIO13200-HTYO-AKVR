@@ -7,21 +7,16 @@ public partial class TEST : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        // just a simple test to test this test
-
-        // jos factoryn metodille antaa truen niin saa väliaikaisesti fromWebin päälle
-        // Factorystä löytyy myös pysyvä asetus sille, sen pitäis ehkä olla jossain web.configissa oikeasti
-        TrainService trainService = ServiceFactory.Train();
-        TrainModel train = trainService.SelectByTrainNumber(70561);
-
-        try
-        {
-            result.Text = train.trainCategory + " " + train.trainType + " " + train.trainNumber.ToString();
-        } catch (Exception ex)
-        {
-            result.Text = "Failed to use train-model :( Something went wrong";
-        }
         
+        string query = "5423543";
+        int intQuery;
+        Int32.TryParse(query, out intQuery);    
+
+        TrainService trainService = ServiceFactory.Train();
+        TrainModel resultTrain = trainService.SelectByTrainNumber(5423543);
+
+        result.Text = resultTrain.ToString();
+
     }
 
 
