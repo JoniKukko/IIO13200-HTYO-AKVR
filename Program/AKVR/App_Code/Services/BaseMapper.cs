@@ -17,24 +17,23 @@ namespace AKVR.Services
         private string Localbaseurl = AppDomain.CurrentDomain.GetData("DataDirectory").ToString() + "\\JSON\\";
 
         
-        // vr näyttää palauttavan paljon taulukkona joten
-        // simppeli metodi karsimaan se YMPÄRILTÄ pois mikäli
-        // halutaan vain yksittäinen
-        protected string stripArray(string json)
-        {
-            return (json[0] == '[') 
-                ? json.Substring(1, json.Length - 2) 
-                : json;
-        }
-
-
 
         // hakee jsonin annetusta urlista
-        protected string getJSON(string address)
+        protected string getJSON(string address, bool returnArray = true)
         {
-            return (this.fromWeb)
+            string json = (this.fromWeb)
                 ? this.DownloadFromWeb(address)
                 : this.DownloadFromLocal(address);
+
+            
+            if (json.Length < 5)
+            {
+                Debug.WriteLine("AKVR:BaseMapper - Empty answer");
+                // just to make sure there is something
+                json = "{}";
+            }
+            
+            return (returnArray) ? this.addArray(json) : this.stripArray(json);
         }
 
 
@@ -42,7 +41,7 @@ namespace AKVR.Services
         // hakee jsonin webistä
         private string DownloadFromWeb(string address)
         {
-            string json;
+            string json = "";
 
             try {
 
@@ -52,11 +51,10 @@ namespace AKVR.Services
                 // ladataan tiedoston sisältö
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB (" + path + ")");
                 json = base.DownloadString(path);
-
+                
             } catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB FAILED: " + ex.Message);
-                json = "[{}]";
             }
 
             return json;
@@ -67,7 +65,7 @@ namespace AKVR.Services
         // hakee jsonin localista
         private string DownloadFromLocal(string address)
         {
-            string json;
+            string json = "";
 
             try {
 
@@ -85,10 +83,30 @@ namespace AKVR.Services
             } catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from LOCAL FAILED: " + ex.Message);
-                json = "[{}]";
             }
 
             return json;
+        }
+
+
+
+
+        // vr näyttää palauttavan paljon taulukkona joten
+        // simppeli metodi karsimaan se YMPÄRILTÄ pois mikäli
+        // halutaan vain yksittäinen
+        private string stripArray(string json)
+        {
+            return (json[0] == '[')
+                ? json.Substring(1, json.Length - 2)
+                : json;
+        }
+
+
+        private string addArray(string json)
+        {
+            return (json[0] != '[')
+                ? '[' + json + ']'
+                : json;
         }
 
 
