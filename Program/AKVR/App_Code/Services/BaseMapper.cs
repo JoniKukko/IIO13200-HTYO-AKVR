@@ -40,11 +40,22 @@ namespace AKVR.Services
         // hakee jsonin annetusta urlista
         protected string getJSON(string address, bool returnArray = true, int cacheTime = 10)
         {
-            string json = this.checkSessionStorage(address)
-                ? this.DownloadFromSessionStorage(address)
-                : this.fromWeb
-                    ? this.DownloadFromWeb(address, cacheTime)
-                    : this.DownloadFromLocal(address);
+            string json;
+
+            if (this.checkSessionStorage(address))
+            {
+                json = this.DownloadFromSessionStorage(address);
+            }
+            else if (this.fromWeb)
+            {
+                json = this.DownloadFromWeb(address);
+                addToSessionStorage(address, json, cacheTime);
+            }
+            else
+            {
+                json = this.DownloadFromLocal(address);
+            }
+            
             
             if (json.Length < 5)
             {
@@ -83,6 +94,7 @@ namespace AKVR.Services
 
 
 
+        // lisätään sessionstorageen tavaraa
         private void addToSessionStorage(string address, string json, int cacheTime)
         {
             SessionStorageModel newSessionStorageModel;
@@ -94,7 +106,7 @@ namespace AKVR.Services
 
 
         // hakee jsonin webistä
-        private string DownloadFromWeb(string address, int cacheTime)
+        private string DownloadFromWeb(string address)
         {
             string json = "";
 
@@ -113,8 +125,6 @@ namespace AKVR.Services
             {
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB FAILED: " + ex.Message);
             }
-
-            this.addToSessionStorage(address, json, cacheTime);
             
             return json;
         }
