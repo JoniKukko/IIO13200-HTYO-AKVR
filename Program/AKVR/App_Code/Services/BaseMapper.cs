@@ -88,7 +88,7 @@ namespace AKVR.Services
         // hakee jsonin sessionista
         private string DownloadFromSessionStorage(string address)
         {
-            Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from SESSIONSTORAGE");
+            Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from SESSIONSTORAGE (" + address + ")");
             return SessionStorage[address].json;
         }
 
