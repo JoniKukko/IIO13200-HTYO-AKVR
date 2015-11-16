@@ -44,7 +44,7 @@ namespace AKVR.Services.Train
             {
                 Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode + ")");
                 // Haetaan json
-                string json = this.getJSON("live-trains?station=" + stationShortCode, true);
+                string json = this.getJSON("live-trains?station=" + stationShortCode + "&arrived_trains=100&arriving_trains=100&departed_trains=100&departing_trains=100", true);
                 // yritetään deserialisoida
                 trains = JsonConvert.DeserializeObject<List<TrainModel>>(json);
             }
