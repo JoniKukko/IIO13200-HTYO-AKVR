@@ -6,6 +6,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Configuration;
 using System.Web;
+using System.Text;
 
 namespace AKVR.Services
 {
@@ -118,6 +119,7 @@ namespace AKVR.Services
 
                 // ladataan tiedoston sisältö
                 Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB (" + path + ")");
+                base.Encoding = UTF8Encoding.UTF8;
                 json = base.DownloadString(path);
 
             }
