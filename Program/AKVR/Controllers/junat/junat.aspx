@@ -15,8 +15,16 @@
         </div>
     </div>
 
-    <div>
-        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+    <div id="train-result-container">
+        <asp:Label ID="labelTrain" runat="server"></asp:Label>
+        <asp:Table ID="tableTrainResults" runat="server">
+            <asp:TableHeaderRow>
+                <asp:TableCell>Asema</asp:TableCell>
+                <asp:TableCell>Raide</asp:TableCell>
+                <asp:TableCell>Tyyppi</asp:TableCell>
+                <asp:TableCell>Aika</asp:TableCell>
+            </asp:TableHeaderRow>
+        </asp:Table>
     </div>
 </asp:Content>
 
