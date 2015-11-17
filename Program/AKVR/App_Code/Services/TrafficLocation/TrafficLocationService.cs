@@ -23,5 +23,12 @@ namespace AKVR.Services.TrafficLocation
         {
             return this.Mapper.SelectByStationName(stationName);
         }
+
+
+        public List<TrafficLocationModel> SelectListByStationName(string stationName)
+        {
+            return this.Mapper.SelectListByStationName(stationName);
+        }
+
     }
 }

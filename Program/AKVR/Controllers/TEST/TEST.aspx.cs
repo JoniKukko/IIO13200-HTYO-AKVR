@@ -11,13 +11,14 @@ public partial class TEST : System.Web.UI.Page
     {
 
         var trafficLocationService  = ServiceFactory.TrafficLocation();
-        var trafficLocation = trafficLocationService.SelectByStationName("Tampere asema");
+        var trafficLocationList = trafficLocationService.SelectListByStationName("fdsafdsafs");
 
+        result.Text = "";
 
-        var trainService = ServiceFactory.Train();
-        var trains = trainService.SelectByStationShortCode(trafficLocation.stationShortCode);
-
-        result.Text = trains.Count.ToString();
+        foreach (var trafficLocation in trafficLocationList)
+        {
+            result.Text = result.Text + " " + trafficLocation.stationName;
+        }
         
 
     }
