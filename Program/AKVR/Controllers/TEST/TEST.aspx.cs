@@ -10,14 +10,14 @@ public partial class TEST : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        var trafficLocationService  = ServiceFactory.TrafficLocation();
-        var trafficLocationList = trafficLocationService.SelectListByStationName("fdsafdsafs");
+        var trainService  = ServiceFactory.Train();
+        var trainList = trainService.SelectAll();
 
         result.Text = "";
 
-        foreach (var trafficLocation in trafficLocationList)
+        foreach (var train in trainList)
         {
-            result.Text = result.Text + " " + trafficLocation.stationName;
+            result.Text = result.Text + " " + train.departureDate.ToString("dd.MM.") + " " + train.trainCategory + " " + train.trainType + train.trainNumber + "<br/>";
         }
         
 

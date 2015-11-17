@@ -35,6 +35,27 @@ namespace AKVR.Services.Train
         }
 
 
+        public List<TrainModel> SelectAll()
+        {
+            List<TrainModel> trains;
+            try
+            {
+                Debug.WriteLine("AKVR:SelectAll");
+                // Haetaan json
+                string json = this.getJSON("live-trains", true, 600);
+                // yritetään deserialisoida
+                trains = JsonConvert.DeserializeObject<List<TrainModel>>(json);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("AKVR:SelectAll FAILED: " + ex.Message);
+                // palautetaan ainakin tyhjä sitten..
+                trains = new List<TrainModel>();
+            }
+            return trains;
+        }
+
+
 
         // palauttaa malli listan aseman lyhenteellä
         public List<TrainModel> SelectByStationShortCode(string stationShortCode)

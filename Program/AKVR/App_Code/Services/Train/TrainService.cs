@@ -37,6 +37,14 @@ namespace AKVR.Services.Train
         }
 
 
+        // nothing special to do..
+        // passing method call to mapper
+        public List<TrainModel> SelectAll()
+        {
+            return this.Mapper.SelectAll();
+        }
+
+
     }
 
 
