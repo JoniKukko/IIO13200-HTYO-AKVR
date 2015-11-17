@@ -17,7 +17,7 @@ public partial class TEST : System.Web.UI.Page
 
         foreach (var train in trainList)
         {
-            result.Text = result.Text + " " + train.departureDate.ToString("dd.MM.") + " " + train.trainCategory + " " + train.trainType + train.trainNumber + "<br/>";
+            result.Text = result.Text + " " + train.departureDate.ToString("dd.MM.") + " " + train.trainCategory + " " + train.trainType + train.trainNumber + " " + train.timeTableRows[0].stationShortCode + "-" + train.timeTableRows[train.timeTableRows.Length-1].stationShortCode + "<br/>";
         }
         
 
