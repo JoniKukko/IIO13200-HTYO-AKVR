@@ -24,7 +24,7 @@ namespace AKVR.Services.Assembly
         public string trainType { get; set; }
 
         //  positive integer  Versionumero, jossa juna on viimeksi muuttunut
-        public int version { get; set; }
+        public long version { get; set; }
 
         // Kuvaa junan yhtä matkaosuutta, joka ajetaan samalla kokoonpanolla 
         public JourneySection[] journeySections { get; set; }
