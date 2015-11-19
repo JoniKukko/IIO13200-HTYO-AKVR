@@ -21,13 +21,28 @@ namespace AKVR.Services.TrafficLocation
 
         public TrafficLocationModel SelectByStationName(string stationName)
         {
-            return this.Mapper.SelectByStationName(stationName);
+            TrafficLocationModel trafficLocation = null;
+            List<TrafficLocationModel> list = this.Mapper.SelectAll();
+            trafficLocation = list.Find(m => m.stationName == stationName);
+
+            return (trafficLocation == null)
+                ? new TrafficLocationModel()
+                : trafficLocation;
         }
+
 
 
         public List<TrafficLocationModel> SelectListByStationName(string stationName)
         {
-            return this.Mapper.SelectListByStationName(stationName);
+            List<TrafficLocationModel> trafficLocations = this.Mapper.SelectAll();
+            return trafficLocations.FindAll(m => m.stationName.StartsWith(stationName));
+        }
+
+
+
+        public List<TrafficLocationModel> SelectAll()
+        {
+            return this.Mapper.SelectAll();
         }
 
     }

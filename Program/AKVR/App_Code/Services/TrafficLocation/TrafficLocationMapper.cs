@@ -10,59 +10,22 @@ namespace AKVR.Services.TrafficLocation
 {
     public class TrafficLocationMapper : BaseMapper
     {
-
-        public TrafficLocationModel SelectByStationName(string stationName)
+        
+        public List<TrafficLocationModel> SelectAll()
         {
-            TrafficLocationModel trafficLocation = null;
-            List<TrafficLocationModel> list;
-
+            List<TrafficLocationModel> trafficLocations;
+            
             try
             {
                 string json = this.getJSON("metadata/stations", true, 3600);
-
-                list = JsonConvert.DeserializeObject<List<TrafficLocationModel>>(json);
-
-                trafficLocation = list.Find(m => m.stationName == stationName);
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("AKVR:SelectByStationName FAILED: " + ex.Message);
-            }
-
-            if (trafficLocation == null)
-            {
-                trafficLocation = new TrafficLocationModel();
-            }
-
-
-            return trafficLocation;
-        }
-
-        public List<TrafficLocationModel> SelectListByStationName(string stationName)
-        {
-            List<TrafficLocationModel> trafficLocations = null;
-
-            try
-            {
-                string json = this.getJSON("metadata/stations", true, 3600);
-
                 trafficLocations = JsonConvert.DeserializeObject<List<TrafficLocationModel>>(json);
-
-                trafficLocations = trafficLocations.FindAll(m => m.stationName.StartsWith(stationName));
-
             }
             catch (Exception ex)
-            {
-                Debug.WriteLine("AKVR:SelectListByStationName FAILED: " + ex.Message);
-            }
-
-            if (trafficLocations == null)
             {
                 trafficLocations = new List<TrafficLocationModel>();
+                Debug.WriteLine("AKVR:SelectAll FAILED: " + ex.Message);
             }
-
-
+            
             return trafficLocations;
         }
 
