@@ -55,23 +55,21 @@ namespace AKVR.Services.Train
             return trains;
         }
 
+        
 
-
-        // palauttaa malli listan aseman lyhenteellä
-        public List<TrainModel> SelectByStationShortCode(string stationShortCode)
+        public List<TrainModel> SelectByStationShortCode(string shortcode, int arrived_trains, int arriving_trains, int departed_trains, int departing_trains)
         {
             List<TrainModel> trains;
             try
             {
-                Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode + ")");
                 // Haetaan json
-                string json = this.getJSON("live-trains?station=" + stationShortCode + "&arrived_trains=100&arriving_trains=100&departed_trains=100&departing_trains=100", true);
+                string json = this.getJSON("live-trains?station=" + shortcode + "&arrived_trains="+ arrived_trains + "&arriving_trains="+ arriving_trains + "&departed_trains="+ departed_trains + "&departing_trains="+ departed_trains, true);
                 // yritetään deserialisoida
                 trains = JsonConvert.DeserializeObject<List<TrainModel>>(json);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("AKVR:TrainMapper:SelectByStationShortCode(" + stationShortCode + ") FAILED: " + ex.Message);
+                Debug.WriteLine("AKVR:SelectByStationShortCode FAILED: " + ex.Message);
                 // palautetaan ainakin tyhjä sitten..
                 trains = new List<TrainModel>();
             }
