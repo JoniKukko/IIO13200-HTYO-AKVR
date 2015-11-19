@@ -41,6 +41,10 @@ namespace AKVR.Services.Train
         // Järjestetty reitin mukaiseen järjestykseen.
         public Timetable[] timeTableRows { get; set; }
 
+        // kertoo sen mitä tossa lukee
+        public int AverageDelay { get; set; }
+        public int MaxDelay { get; set; }
+
     }
 
 
