@@ -1,0 +1,52 @@
+
+=== ASEMA SIVU ===
+Aseman, p‰iv‰m‰‰r‰n ja kellonajan mukaan asemalle pys‰htyv‰t junat
+(Aika, juna, m‰‰r‰np‰‰, raide)
+
+StationService.SelectTimetable(string stationname, datetime = now(), int limitBefore = 0, int LimitAfter = 10)
+
+
+=== JUNA SIVU ===
+Junan tai aseman nimell‰ ja tunnuksella
+Aseman tiedoilla pys‰htyv‰t junat
+Junan tunnuksella juna nyt (websocket), kokoonpano ja aikataulu
+
+TrainService.SelectByStationName(string stationname);
+StationService.SelectByShortCode(string shortcode);
+TrainService.SelectByTrainNumber(int numero);
+AssemblyService.SelectByTrainNumber(int numero, datetime = now());
+AccessInformationMessageService.OpenWebsocketByTrainNumber();
+
+
+trains = TrainService.SelectByStationName(asemanNimi);
+if(trains empty)
+	asemanNimi = StationService.SelectByShortCode().StationName;
+	trains = TrainService.SelectByStationName(asemanNimi);
+}
+
+if(trains still empty){
+	trains = TrainService.SelectByTrainNumber();
+}
+
+
+=== TILASTOT SIVU ===
+P‰iv‰m‰‰r‰n mukaan keskiarvo myˆh‰styminen
+	TrainService.SelectFromHistoryAll(date = now());
+	TrainService.SelectFromHistoryByTrainNumber(date = now());
+
+
+
+
+=== LIVE SIVU ===
+lista = StationService.SelectAll();
+dikki = new Dictionary<string, string>;
+dikki = lista.toDictionary(new n => n.shortcode, n.stationname);
+
+dikki[nextStation]
+
+TrainNumber - PreviousTrackSection - CurrentTrackSection - NextTrackSection -  PreviousStation - CurrentStation - NextStation
+3432 SIU_P211 SIU_031 SIU_V001 Sein‰joki Tampere Oulu
+
+
+AccessInformationMessageService.OpenWebsocket();
+
