@@ -8,7 +8,7 @@ namespace AKVR.Services.AccessInformationMessage
         public int id { get; set; }
 
         // positive integer  Versionumero, jossa kulkutietoviesti on viimeksi muuttunut
-        public int version { get; set; }
+        public long version { get; set; }
 
         // 1-99999   Junan numero. Esim junan "IC 59" junanumero on 59
         public int trainNumber { get; set; }
