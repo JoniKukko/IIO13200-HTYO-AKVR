@@ -3,7 +3,11 @@
 Aseman, p‰iv‰m‰‰r‰n ja kellonajan mukaan asemalle pys‰htyv‰t junat
 (Aika, juna, m‰‰r‰np‰‰, raide)
 
-StationService.SelectTimetable(string stationname, datetime = now(), int limitBefore = 0, int LimitAfter = 10)
+VR ei tarjoa p‰iv‰m‰‰r‰n mukaan hakua, pit‰is teh‰ itse, teen jos kerkeen mut alota nykyhetkest‰
+T‰‰ ny hakee kokoajan vaan nykyhetkest‰.
+SelectByStationShortCode(string shortcode, string dateTime = "dd.mm.yyyy hh:ii:ss",  int arrived_trains = 5, int arriving_trains = 5, int departed_trains = 5, int departing_trains = 5)
+
+
 
 
 === JUNA SIVU ===
@@ -11,21 +15,21 @@ Junan tai aseman nimell‰ ja tunnuksella
 Aseman tiedoilla pys‰htyv‰t junat
 Junan tunnuksella juna nyt (websocket), kokoonpano ja aikataulu
 
-TrainService.SelectByStationName(string stationname);
-StationService.SelectByShortCode(string shortcode);
+TrainService.SelectByStationShortCode(string shortcode);
+TrafficLocationService.SelectByStationName(string stationname);
 TrainService.SelectByTrainNumber(int numero);
-AssemblyService.SelectByTrainNumber(int numero, datetime = now());
+AssemblyService.SelectByTrainNumber(int numero, string date);
 AccessInformationMessageService.OpenWebsocketByTrainNumber();
 
 
-trains = TrainService.SelectByStationName(asemanNimi);
+trains = TrainService.SelectByStationShortCode(string shortcode);
 if(trains empty)
-	asemanNimi = StationService.SelectByShortCode().StationName;
-	trains = TrainService.SelectByStationName(asemanNimi);
+	shortcode = TrafficLocationService.SelectByStationName(string stationname).shortcode;
+	trains = SelectByStationShortCode(string shortcode);
 }
 
 if(trains still empty){
-	trains = TrainService.SelectByTrainNumber();
+	trains = TrainService.SelectByTrainNumber(int i);
 }
 
 
