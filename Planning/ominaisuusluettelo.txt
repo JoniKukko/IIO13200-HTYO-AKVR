@@ -42,7 +42,7 @@ Päivämäärän mukaan keskiarvo myöhästyminen
 
 
 === LIVE SIVU ===
-lista = StationService.SelectAll();
+lista = TrafficLocationService.SelectAll();
 dikki = new Dictionary<string, string>;
 dikki = lista.toDictionary(new n => n.shortcode, n.stationname);
 
