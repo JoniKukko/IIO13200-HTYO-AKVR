@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using AKVR.Services.Train;
 using AKVR.Services.TrafficLocation;
+using AKVR.Services.Assembly;
 
 namespace AKVR.Services
 {
@@ -17,6 +18,12 @@ namespace AKVR.Services
         {
             Debug.WriteLine("AKVR:ServiceFactory - New TrafficLocation.Service");
             return new TrafficLocationService(new TrafficLocationMapper());
+        }
+
+        public static AssemblyService Assembly()
+        {
+            Debug.WriteLine("AKVR:ServiceFactory - New Assembly.Service");
+            return new AssemblyService(new AssemblyMapper());
         }
 
 
