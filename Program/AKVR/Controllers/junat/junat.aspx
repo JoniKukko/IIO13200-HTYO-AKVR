@@ -4,8 +4,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContentHolder" runat="Server">
     <h1 class="page-header">Junien aikataulut ja tiedot</h1>
-    <div class="navbar-form">
-    </div>
     <div id="train-search-input">
         <div class="input-group col-md-6">
             <asp:TextBox ID="tbSearchTrains" CssClass="search-query form-control" runat="server" placeholder="Kirjoita junan tunnus tai asema"></asp:TextBox>

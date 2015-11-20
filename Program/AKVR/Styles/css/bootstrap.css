@@ -113,9 +113,10 @@ input,
 optgroup,
 select,
 textarea {
-  margin: 0;
-  font: inherit;
   color: inherit;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 button {
   overflow: visible;
@@ -130,6 +131,7 @@ input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer;
+    width: 59px;
 }
 button[disabled],
 html input[disabled] {
@@ -3001,7 +3003,6 @@ select[multiple].input-lg {
 .btn {
   display: inline-block;
   padding: 6px 12px;
-  margin-bottom: 0;
   font-size: 14px;
   font-weight: normal;
   line-height: 1.42857143;
