@@ -14,6 +14,7 @@
     </div>
 
     <div id="train-result-container">
+        <asp:DataList ID="dlTrains" runat="server"></asp:DataList>
         <asp:Label ID="labelTrain" runat="server"></asp:Label>
         <asp:Table ID="tableTrainResults" runat="server">
             <asp:TableHeaderRow>
