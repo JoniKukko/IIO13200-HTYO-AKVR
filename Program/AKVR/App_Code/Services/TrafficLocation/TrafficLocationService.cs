@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -24,6 +25,15 @@ namespace AKVR.Services.TrafficLocation
             TrafficLocationModel trafficLocation = null;
             List<TrafficLocationModel> list = this.Mapper.SelectAll();
             trafficLocation = list.Find(m => m.stationName == stationName);
+
+            if (trafficLocation == null)
+            {
+                Debug.WriteLine("TrafficLocation not found with full stationName - trying with \"StartsWith\"");
+                trafficLocation = list.Find(m => m.stationName.StartsWith(stationName));
+            } else
+            {
+                Debug.WriteLine("TrafficLocation found with full stationName");
+            }
 
             return (trafficLocation == null)
                 ? new TrafficLocationModel()
