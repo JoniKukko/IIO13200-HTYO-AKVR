@@ -45,6 +45,13 @@ namespace AKVR.Services.Train
         public int AverageDelay { get; set; }
         public int MaxDelay { get; set; }
 
+        public string FullTrainName
+        {
+            get
+            {
+                return trainType + trainNumber.ToString();
+            }
+        }
     }
 
 

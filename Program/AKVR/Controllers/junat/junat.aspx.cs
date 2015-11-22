@@ -11,8 +11,8 @@ using System.Diagnostics;
 
 public partial class Controllers_junat_junat : System.Web.UI.Page
 {
-    // Create new TrainService
-    AKVR.Services.Train.TrainService trainService = AKVR.Services.ServiceFactory.Train();
+    // Create new Services
+    TrainService trainService = AKVR.Services.ServiceFactory.Train();
     TrafficLocationService trafficLocationService = AKVR.Services.ServiceFactory.TrafficLocation();
 
     protected void Page_Load(object sender, EventArgs e)
@@ -25,15 +25,27 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         searchTrains();
     }
 
+    public Match isNumber(string query)
+    {
+        // Checks if only numbers, train number
+        Regex regexTrainNumber = new Regex(@"^\d+$"); //^[0-9]{1,3}$
+        Match check = regexTrainNumber.Match(query);
+
+        return check;
+    }
+
+    /* 
+    Check whether the search query is int or string,
+    then uses the appropriate method to search trains.
+    Calls a method to update the view.
+    */
     private void searchTrains()
     {
         string query = tbSearchTrains.Text;
         TrainModel resultTrain;
         List<TrainModel> resultTrainList;
 
-        // Checks if only numbers, train number
-        Regex regexTrainNumber = new Regex(@"^\d+$"); //^[0-9]{1,3}$
-        Match check = regexTrainNumber.Match(query);
+        Match check = isNumber(query);
 
         // Determine the type of the query
         // check.Success == true when the query is numbers, train number
@@ -63,8 +75,22 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         else
         {
             resultTrainList = searchTrainsByStation(query);
-            dlTrains.DataSource = resultTrainList;
-            dlTrains.DataBind();
+            Session["resultTrainList"] = resultTrainList;
+            Debug.WriteLine("AKVR:junat.aspx.cs:searchTrains() - " + resultTrainList.Count);
+
+            if (resultTrainList.Count != 0 && resultTrainList[0].FullTrainName != "0")
+            {
+                // Display resulting trains in dropdown list
+                dlTrains.DataSource = resultTrainList;
+                dlTrains.DataValueField = "FullTrainName";
+                dlTrains.DataBind();
+                labelTrain.Text = "";
+
+            } else
+            {
+                labelTrain.Text = "Junia ei löytynyt.";
+                Debug.WriteLine("AKVR:junat.aspx.cs:searchTrains() - searchTrainsByStation() returned empty list");
+            }
         }
 
         
@@ -117,8 +143,16 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         TrafficLocationModel resultStation = trafficLocationService.SelectByStationName(stationName);
         Debug.WriteLine("AKVR:junat.aspx.cs:searchTrainsByStation() - resulting station name: " + resultStation.stationName);
         var resultShorCode = resultStation.stationShortCode;
+        Debug.WriteLine("AKVR:junat.aspx.cs:searchTrainsByStation() - resulting station shortcode: " + resultStation.stationShortCode);
 
         // Can still return empty model, checked later
         return trainService.SelectByStationShortCode(resultShorCode);
+    }
+
+    protected void dlTrains_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var list = (List<TrainModel>)Session["resultTrainList"];
+        Debug.WriteLine("AKVR:junat.aspx.cs:dlTrains_SelectedIndexChanged() - Session['resultTrainList'][selectedIndex].FullTrainName " + list[dlTrains.SelectedIndex].FullTrainName);
+        updateTrainInfo((TrainModel)list[dlTrains.SelectedIndex]);
     }
 }

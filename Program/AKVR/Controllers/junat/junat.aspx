@@ -14,7 +14,7 @@
     </div>
 
     <div id="train-result-container">
-        <asp:DataList ID="dlTrains" runat="server"></asp:DataList>
+        <asp:DropDownList ID="dlTrains" runat="server" AutoPostBack="True" OnSelectedIndexChanged="dlTrains_SelectedIndexChanged"></asp:DropDownList>
         <asp:Label ID="labelTrain" runat="server"></asp:Label>
         <asp:Table ID="tableTrainResults" runat="server">
             <asp:TableHeaderRow>
