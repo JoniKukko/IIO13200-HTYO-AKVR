@@ -78,6 +78,7 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
             Session["resultTrainList"] = resultTrainList;
             Debug.WriteLine("AKVR:junat.aspx.cs:searchTrains() - " + resultTrainList.Count);
 
+
             if (resultTrainList.Count != 0 && resultTrainList[0].FullTrainName != "0")
             {
                 // Display resulting trains in dropdown list
