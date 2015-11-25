@@ -40,7 +40,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                 timeQuery = DateTime.ParseExact(tbStationDate.Text + " " + tbStationTime.Text, "dd.MM.yyyy HH.mm", CultureInfo.InvariantCulture);
                 Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - timeQuery: " + timeQuery);
                 timeQueryString = Convert.ToString(timeQuery);
-                
+
                 // Nollataan label jos aiempi syöte oli virheellinen
                 labelStation.Text = "";
             }
@@ -49,11 +49,11 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                 Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - Time query could not be parsed - " + ex.Message);
                 labelStation.Text = "Anna päivämäärä ja aika muodossa: pp.kk.vvvv hh.mm";
             }
-            
+
         }
         else
         {
-            labelStation.Text = "Täytä kaikki kentät tai jätä päivämäärä JA aika tyhjiksi.";
+            labelStation.Text = "";
         }
 
         Session["shortcode"] = getShortcodeByStation(tbSearchStations.Text);
@@ -73,55 +73,70 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
         {
             labelStation.Text = "Asemia ei löytynyt.";
         }
-        
+
     }
 
     private void populateTables(List<TrainModel> resultTrainList)
     {
         foreach (var resultTrain in resultTrainList)
         {
-            TableRow trainStop = new TableRow();
+            Debug.WriteLine("AKVR.asemat.aspx.cs:populateTables() - train changed");
 
-            TableCell trainStopDestination = new TableCell();
-            TableCell trainStopTrainNumber = new TableCell();
-
-            trainStopDestination.Text = resultTrain.timeTableRows.Last<Timetable>().stationShortCode;
-            trainStopTrainNumber.Text = resultTrain.FullTrainName;
-
-            Debug.WriteLine("AKVR.asemat.aspx.cs:populateTables() - trainstopdestination = " + trainStopDestination.Text);
-            foreach (var row in resultTrain.timeTableRows)
+            try
             {
+                labelStation.Text = "";
 
-                TableCell trainStopTrackNumber = new TableCell();
-                TableCell trainStopTime = new TableCell();
-                TableCell trainStopEstimate = new TableCell();
-
-                if (row.stationShortCode == (string)Session["shortcode"])
+                foreach (var row in resultTrain.timeTableRows)
                 {
-                    trainStopTrackNumber.Text = row.commercialTrack;
-                    trainStopTime.Text = row.scheduledTime.ToShortTimeString();
-                    trainStopEstimate.Text = row.liveEstimateTime.ToShortTimeString();
 
-                    Debug.WriteLine("AKVR.asemat.aspx.cs:populateTables() - trainStopTime = " + trainStopTime.Text);
-                    Debug.WriteLine("AKVR.asemat.aspx.cs:populateTables() - trainstopdestination = " + trainStopDestination.Text);
-                    // Add the cells in a row
-                    trainStop.Cells.Add(trainStopDestination);
-                    trainStop.Cells.Add(trainStopTrackNumber);
-                    trainStop.Cells.Add(trainStopTime);
-                    trainStop.Cells.Add(trainStopEstimate);
-                    trainStop.Cells.Add(trainStopTrainNumber);
+                    if (row.stationShortCode == (string)Session["shortcode"])
+                    {
+                        TableRow trainStop = new TableRow();
 
-                    if (row.type == "ARRIVAL")
-                    {
-                        tableArrivingTrains.Rows.Add(trainStop);
-                    }
-                    else if (row.type == "DEPARTURE")
-                    {
-                        tableDepartingTrains.Rows.Add(trainStop);
+                        TableCell trainStopDestination = new TableCell();
+                        TableCell trainStopTrainNumber = new TableCell();
+                        TableCell trainStopTrackNumber = new TableCell();
+                        TableCell trainStopTime = new TableCell();
+                        TableCell trainStopEstimate = new TableCell();
+
+
+                        // Trains final destination
+                        trainStopDestination.Text = resultTrain.timeTableRows.Last<Timetable>().stationShortCode;
+
+                        trainStopTrainNumber.Text = resultTrain.FullTrainName;
+                        trainStopTrackNumber.Text = row.commercialTrack;
+                        trainStopTime.Text = row.scheduledTime.ToShortTimeString();
+
+                        // Added only if there is a meaningful value
+                        // Sometimes is the same as the scheduled time
+                        if (row.liveEstimateTime.ToShortTimeString() != "0.00")
+                        {
+                            trainStopEstimate.Text = row.liveEstimateTime.ToShortTimeString();
+                        }
+
+                        // Add the cells in a row
+                        trainStop.Cells.Add(trainStopDestination);
+                        trainStop.Cells.Add(trainStopTrackNumber);
+                        trainStop.Cells.Add(trainStopTime);
+                        trainStop.Cells.Add(trainStopEstimate);
+                        trainStop.Cells.Add(trainStopTrainNumber);
+
+                        if (row.type == "ARRIVAL")
+                        {
+                            tableArrivingTrains.Rows.Add(trainStop);
+                        }
+                        else if (row.type == "DEPARTURE")
+                        {
+                            tableDepartingTrains.Rows.Add(trainStop);
+                        }
                     }
                 }
             }
-
+            catch (Exception ex)
+            {
+                // Fails if returned train is empty, aka no trains found
+                labelStation.Text = "Asemia ei löytynyt.";
+            }
             /*
             for (int i = 0; i < resultTrain.timeTableRows.Count() - 1; i++)
             {

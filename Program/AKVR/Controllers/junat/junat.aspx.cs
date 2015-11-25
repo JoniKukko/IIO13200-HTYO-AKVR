@@ -41,7 +41,18 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
     */
     private void searchTrains()
     {
+        labelTrain.Text = "";
+        dlTrains.Items.Clear();
+
         string query = tbSearchTrains.Text;
+
+        // Check that the query is not empty
+        if (query == "")
+        {
+            labelTrain.Text = "Anna hakusana.";
+            return;
+        }
+
         TrainModel resultTrain;
         List<TrainModel> resultTrainList;
 

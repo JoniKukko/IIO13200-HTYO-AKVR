@@ -16,7 +16,7 @@
     <div id="train-result-container">
         <asp:DropDownList ID="dlTrains" runat="server" AutoPostBack="True" OnSelectedIndexChanged="dlTrains_SelectedIndexChanged"></asp:DropDownList>
         <asp:Label ID="labelTrain" runat="server"></asp:Label>
-        <asp:Table ID="tableTrainResults" runat="server">
+        <asp:Table ID="tableTrainResults" runat="server" CssClass="table table-striped">
             <asp:TableHeaderRow>
                 <asp:TableCell>Asema</asp:TableCell>
                 <asp:TableCell>Raide</asp:TableCell>

@@ -21,7 +21,7 @@
     </div>
     <div>
         <h2>Saapuvat</h2>
-        <asp:Table ID="tableArrivingTrains" runat="server" CssClass="col-md-3">
+        <asp:Table ID="tableArrivingTrains" runat="server" CssClass="col-md-3 table table-striped">
             <asp:TableHeaderRow>
                 <asp:TableCell>Määränpää</asp:TableCell>
                 <asp:TableCell>Raide</asp:TableCell>
@@ -30,13 +30,8 @@
                 <asp:TableCell>Junan numero</asp:TableCell>
             </asp:TableHeaderRow>
         </asp:Table>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
         <h2>Lähtevät</h2>
-        <asp:Table ID="tableDepartingTrains" runat="server" CssClass="col-md-3">
+        <asp:Table ID="tableDepartingTrains" runat="server" CssClass="col-md-3 table table-striped">
             <asp:TableHeaderRow>
                 <asp:TableCell>Määränpää</asp:TableCell>
                 <asp:TableCell>Raide</asp:TableCell>
