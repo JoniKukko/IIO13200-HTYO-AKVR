@@ -91,3 +91,26 @@ h1 {
     background-color: #90C660;
 }
 
+
+
+
+
+.spacer-top-xs { margin-top: 10px; }
+.spacer-bottom-xs { margin-bottom: 10px; }
+.spacer-both-xs { margin-bottom: 10px; margin-top: 10px; }
+
+.spacer-top-sm { margin-top: 20px; }
+.spacer-bottom-sm { margin-bottom: 20px; }
+.spacer-both-sm { margin-bottom: 20px; margin-top: 20px; }
+
+.spacer-top-md { margin-top: 30px; }
+.spacer-bottom-md { margin-bottom: 30px; }
+.spacer-both-md { margin-bottom: 30px; margin-top: 30px; }
+
+.spacer-top-lg { margin-top: 40px; }
+.spacer-bottom-lg { margin-bottom: 40px; }
+.spacer-both-lg { margin-bottom: 40px; margin-top: 40px; }
+
+
+
+

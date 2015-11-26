@@ -2,20 +2,36 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
+
+
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContentHolder" runat="Server">
-    <h1 class="page-header">Junien aikataulut ja tiedot</h1>
-    <div id="train-search-input">
-        <div class="input-group col-md-6">
-            <asp:TextBox ID="tbSearchTrains" CssClass="search-query form-control" runat="server" placeholder="Kirjoita junan tunnus tai asema"></asp:TextBox>
-            <span class="input-group-btn">
-                <asp:Button ID="btnSearchTrains" CssClass="btn btn-success train-search-button" runat="server" Text="Etsi" OnClick="btnSearchTrains_Click" />
-            </span>
+    <div class="col-md-12">
+        <h1 class="page-header">Junien aikataulut ja tiedot</h1>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <asp:TextBox ID="tbSearchTrains" CssClass="search-query form-control" runat="server" placeholder="Kirjoita junan tunnus tai asema"></asp:TextBox>
+                    <span class="input-group-btn">
+                        <asp:Button ID="btnSearchTrains" CssClass="btn btn-success train-search-button" runat="server" Text="Etsi" OnClick="btnSearchTrains_Click" />
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row spacer-both-xs">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <asp:DropDownList ID="dlTrains" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="dlTrains_SelectedIndexChanged"></asp:DropDownList>
+                    <span class="input-group-addon"><asp:Label ID="labelTrain" runat="server"></asp:Label></span>
+                </div>
         </div>
     </div>
 
-    <div id="train-result-container">
-        <asp:DropDownList ID="dlTrains" runat="server" AutoPostBack="True" OnSelectedIndexChanged="dlTrains_SelectedIndexChanged"></asp:DropDownList>
-        <asp:Label ID="labelTrain" runat="server"></asp:Label>
+
+    <div class="col-md-12">
         <asp:Table ID="tableTrainResults" runat="server" CssClass="table table-striped">
             <asp:TableHeaderRow>
                 <asp:TableCell>Asema</asp:TableCell>
