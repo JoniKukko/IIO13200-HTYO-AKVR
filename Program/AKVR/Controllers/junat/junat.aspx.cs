@@ -117,8 +117,14 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
 
     private void updateTrainInfo(TrainModel resultTrain)
     {
+        Dictionary<string, string> stationNames = populateStationNameList();
+
+        /*
         // Print train type and number in label
         labelTrain.Text = resultTrain.trainType.ToString() + resultTrain.trainNumber.ToString();
+        */
+
+        labelTrain.Text = "";
 
         // Timetable
         for (int i = 0; i < resultTrain.timeTableRows.Count() - 1; i++)
@@ -130,22 +136,39 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
 
                 TableCell trainStopStation = new TableCell();
                 TableCell trainStopTrackNumber = new TableCell();
-                TableCell trainStopType = new TableCell(); // Departure or arrival
-                TableCell trainStopTime = new TableCell();
+                TableCell trainArrivalTime = new TableCell();
+                TableCell trainDepartureTime = new TableCell();
 
-                trainStopStation.Text = resultTrain.timeTableRows[i].stationShortCode;
-                trainStopTrackNumber.Text = resultTrain.timeTableRows[i].commercialTrack;
-                trainStopTime.Text = resultTrain.timeTableRows[i].scheduledTime.ToShortTimeString();
-                // Check if the train is arriving or departuring:
-                trainStopType.Text = (resultTrain.timeTableRows[i].type == "ARRIVAL") ? "Saapuu" : "Lähtee";
+                string stationname;
 
-                // Add the cells in a row
-                trainStop.Cells.Add(trainStopStation);
-                trainStop.Cells.Add(trainStopTrackNumber);
-                trainStop.Cells.Add(trainStopType);
-                trainStop.Cells.Add(trainStopTime);
+                // Check that row is not last
+                if (i < resultTrain.timeTableRows.Count())
+                {
+                    // Links to next row or is first row
+                    if (resultTrain.timeTableRows[i].type == "ARRIVAL" || i == 0)
+                    {
 
-                tableTrainResults.Rows.Add(trainStop);
+                        stationNames.TryGetValue(resultTrain.timeTableRows[i].stationShortCode, out stationname);
+                        trainStopStation.Text = stationname;
+                        trainStopTrackNumber.Text = resultTrain.timeTableRows[i].commercialTrack;
+
+                        trainArrivalTime.Text = (i != 0)
+                            ? resultTrain.timeTableRows[i].scheduledTime.ToShortTimeString()
+                            : "";
+
+                        trainDepartureTime.Text = (i != 0) 
+                            ? resultTrain.timeTableRows[i+1].scheduledTime.ToShortTimeString() 
+                            : resultTrain.timeTableRows[i].scheduledTime.ToShortTimeString();
+
+                        // Add the cells in a row
+                        trainStop.Cells.Add(trainStopStation);
+                        trainStop.Cells.Add(trainStopTrackNumber);
+                        trainStop.Cells.Add(trainArrivalTime);
+                        trainStop.Cells.Add(trainDepartureTime);
+
+                        tableTrainResults.Rows.Add(trainStop);
+                    }
+                }
             }
         }
     }
@@ -166,5 +189,17 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         var list = (List<TrainModel>)Session["resultTrainList"];
         Debug.WriteLine("AKVR:junat.aspx.cs:dlTrains_SelectedIndexChanged() - Session['resultTrainList'][selectedIndex].FullTrainName " + list[dlTrains.SelectedIndex].FullTrainName);
         updateTrainInfo((TrainModel)list[dlTrains.SelectedIndex]);
+    }
+
+    private Dictionary<string, string> populateStationNameList()
+    {
+        List<TrafficLocationModel> allStations = trafficLocationService.SelectAll();
+        Dictionary<string, string> stationNames = new Dictionary<string, string>();
+        foreach (var location in allStations)
+        {
+            stationNames.Add(location.stationShortCode, location.stationName);
+        }
+
+        return stationNames;
     }
 }

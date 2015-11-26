@@ -109,7 +109,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
 
                         // Added only if there is a meaningful value
                         // Sometimes is the same as the scheduled time
-                        if (row.liveEstimateTime.ToShortTimeString() != "0:00")
+                        if (row.liveEstimateTime.ToShortTimeString() != "0:00" && row.liveEstimateTime.ToShortTimeString() != "0.00")
                         {
                             trainStopEstimate.Text = row.liveEstimateTime.ToShortTimeString();
                         }
