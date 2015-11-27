@@ -14,16 +14,26 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
     // Create new Services
     TrainService trainService = AKVR.Services.ServiceFactory.Train();
     TrafficLocationService trafficLocationService = AKVR.Services.ServiceFactory.TrafficLocation();
+    Dictionary<string, string> stationNames;
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        stationNames = populateStationNameList();
+
+        // If URL parameter is given, start search
+        if (Request.QueryString["query"] != null && !Page.IsPostBack)
+        {
+            searchTrains(Request.QueryString["query"]);
+        }
     }
+
 
     protected void btnSearchTrains_Click(object sender, EventArgs e)
     {
-        searchTrains();
+        searchTrains(tbSearchTrains.Text);
     }
+
 
     public Match isNumber(string query)
     {
@@ -34,17 +44,17 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         return check;
     }
 
+
     /* 
     Check whether the search query is int or string,
     then uses the appropriate method to search trains.
     Calls a method to update the view.
     */
-    private void searchTrains()
+    private void searchTrains(string query)
     {
+        // Clear label and dropdown list
         labelTrain.Text = "";
         dlTrains.Items.Clear();
-
-        string query = tbSearchTrains.Text;
 
         // Check that the query is not empty
         if (query == "")
@@ -74,6 +84,7 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
             if (resultTrain.trainType != null)
             {
                 updateTrainInfo(resultTrain);
+                labelTrain.Text = resultTrain.FullTrainName;
             }
             else
             {
@@ -85,11 +96,11 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         // If search query is not number; station name
         else
         {
-            resultTrainList = searchTrainsByStation(query);
+            resultTrainList = searchTrainsByStation(UppercaseFirst(query));
             Session["resultTrainList"] = resultTrainList;
             Debug.WriteLine("AKVR:junat.aspx.cs:searchTrains() - " + resultTrainList.Count);
 
-
+            // Check that there is at least one not empty train in the list
             if (resultTrainList.Count != 0 && resultTrainList[0].FullTrainName != "0")
             {
                 // Display resulting trains in dropdown list
@@ -108,28 +119,23 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         
     }
 
+
     private TrainModel searchTrainByNumber(int trainNumber)
     {
         // Search the train
         return trainService.SelectByTrainNumber(trainNumber);
-
     }
+
 
     private void updateTrainInfo(TrainModel resultTrain)
     {
-        Dictionary<string, string> stationNames = populateStationNameList();
-
-        /*
-        // Print train type and number in label
-        labelTrain.Text = resultTrain.trainType.ToString() + resultTrain.trainNumber.ToString();
-        */
 
         labelTrain.Text = "";
 
         // Timetable
         for (int i = 0; i < resultTrain.timeTableRows.Count() - 1; i++)
         {
-            // If the train stops
+            // If the train stops at station
             if (resultTrain.timeTableRows[i].trainStopping)
             {
                 TableRow trainStop = new TableRow();
@@ -139,7 +145,7 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
                 TableCell trainArrivalTime = new TableCell();
                 TableCell trainDepartureTime = new TableCell();
 
-                string stationname;
+                string stationName;
 
                 // Check that row is not last
                 if (i < resultTrain.timeTableRows.Count())
@@ -148,14 +154,26 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
                     if (resultTrain.timeTableRows[i].type == "ARRIVAL" || i == 0)
                     {
 
-                        stationNames.TryGetValue(resultTrain.timeTableRows[i].stationShortCode, out stationname);
-                        trainStopStation.Text = stationname;
+                        // STATION NAME
+                        try
+                        {
+                            stationNames.TryGetValue(resultTrain.timeTableRows[i].stationShortCode, out stationName);
+                            trainStopStation.Text = "<a href='asemat?query=" + stationName + "'>" + stationName;
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("AKVR - updateTrainInfo - stationNames.TryGetValue fails: " + ex.Message);
+                        }
+                        
+                        // TRACK NUMBER
                         trainStopTrackNumber.Text = resultTrain.timeTableRows[i].commercialTrack;
 
+                        // ARRIVAL TIME
                         trainArrivalTime.Text = (i != 0)
                             ? resultTrain.timeTableRows[i].scheduledTime.ToShortTimeString()
                             : "";
 
+                        // DEPARTURE TIME
                         trainDepartureTime.Text = (i != 0) 
                             ? resultTrain.timeTableRows[i+1].scheduledTime.ToShortTimeString() 
                             : resultTrain.timeTableRows[i].scheduledTime.ToShortTimeString();
@@ -166,6 +184,7 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
                         trainStop.Cells.Add(trainArrivalTime);
                         trainStop.Cells.Add(trainDepartureTime);
 
+                        // Add row to table
                         tableTrainResults.Rows.Add(trainStop);
                     }
                 }
@@ -201,5 +220,17 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         }
 
         return stationNames;
+    }
+
+    static string UppercaseFirst(string s)
+    {
+        if (string.IsNullOrEmpty(s))
+        {
+            return string.Empty;
+        }
+
+        char[] a = s.ToCharArray();
+        a[0] = char.ToUpper(a[0]);
+        return new string(a);
     }
 }

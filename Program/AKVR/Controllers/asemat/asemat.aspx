@@ -23,6 +23,7 @@
         <h2>Saapuvat</h2>
         <asp:Table ID="tableArrivingTrains" runat="server" CssClass="col-md-3 table table-striped">
             <asp:TableHeaderRow>
+                <asp:TableCell>PVM</asp:TableCell>
                 <asp:TableCell>Määränpää</asp:TableCell>
                 <asp:TableCell>Raide</asp:TableCell>
                 <asp:TableCell>Aikataulu</asp:TableCell>
@@ -33,6 +34,7 @@
         <h2>Lähtevät</h2>
         <asp:Table ID="tableDepartingTrains" runat="server" CssClass="col-md-3 table table-striped">
             <asp:TableHeaderRow>
+                <asp:TableCell>PVM</asp:TableCell>
                 <asp:TableCell>Määränpää</asp:TableCell>
                 <asp:TableCell>Raide</asp:TableCell>
                 <asp:TableCell>Aikataulu</asp:TableCell>

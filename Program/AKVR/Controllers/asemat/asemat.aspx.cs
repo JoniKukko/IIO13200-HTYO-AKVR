@@ -18,56 +18,68 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
     {
         tbStationDate.Attributes["placeholder"] = DateTime.Now.ToShortDateString();
         tbStationTime.Attributes["placeholder"] = DateTime.Now.ToShortTimeString();
+
+        // If URL parameter is given, start search
+        if (Request.QueryString["query"] != null && !Page.IsPostBack)
+        {
+            searchStations(Request.QueryString["query"], tbStationDate.Text, tbStationTime.Text);
+        }
     }
 
     protected void btnSearchStations_Click(object sender, EventArgs e)
     {
-        searchStations();
+        searchStations(tbSearchStations.Text, tbStationDate.Text, tbStationTime.Text);
     }
 
-    private void searchStations()
+
+    private string parseDateAndTimeString(string date, string time)
     {
-        DateTime timeQuery = DateTime.Now;
-        string timeQueryString = Convert.ToString(timeQuery);
-        Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - timeQueryString: " + timeQueryString);
+        string parsedDateAndTime = DateTime.Now.ToString("dd.MM.yyyy hh:mm:ss");
+        Debug.WriteLine("AKVR datetimestring Now()- " + parsedDateAndTime);
+
+        try
+        {
+            DateTime dt = Convert.ToDateTime(date + " " + time);
+            parsedDateAndTime = dt.ToString();
+            Debug.WriteLine("AKVR datetimestring parsed - " + parsedDateAndTime);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("AKVR datetime not parsed - " + ex.Message);
+            labelStation.Text = "Anna päivämäärä ja aika muodossa pp.kk.vvvv hh.mm";
+        }
+
+        return parsedDateAndTime;
+    }
+
+
+    private void searchStations(string query, string date, string time)
+    {
+        string timeQueryString = DateTime.Now.ToString();
 
         // Check that both date and time fields have something in them
         if (!(string.IsNullOrWhiteSpace(tbStationDate.Text) || string.IsNullOrWhiteSpace(tbStationTime.Text)))
         {
-            try
-            {
-                // If the DateTime is later needed instead of a string
-                timeQuery = DateTime.ParseExact(tbStationDate.Text + " " + tbStationTime.Text, "dd.MM.yyyy HH.mm", CultureInfo.InvariantCulture);
-                Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - timeQuery: " + timeQuery);
-                timeQueryString = Convert.ToString(timeQuery);
-
-                // Nollataan label jos aiempi syöte oli virheellinen
-                labelStation.Text = "";
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - Time query could not be parsed - " + ex.Message);
-                labelStation.Text = "Anna päivämäärä ja aika muodossa: pp.kk.vvvv hh.mm";
-            }
-
+            labelStation.Text = "";
+            timeQueryString = parseDateAndTimeString(date, time);
         }
         else
         {
             labelStation.Text = "";
         }
 
-        Session["shortcode"] = getShortcodeByStation(tbSearchStations.Text);
+        Session["shortcode"] = getShortcodeByStation(query);
         Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - shortcode: " + (string)Session["shortcode"]);
 
         List<TrainModel> resultTrainList;
 
         if ((string)Session["shortcode"] != "")
         {
+            Debug.WriteLine("AKVR datetimestring when sending - " + timeQueryString);
             // Tällä sitten jos vielä tekis jotain
             resultTrainList = trainService.SelectByStationShortCode((string)Session["shortcode"], timeQueryString);
 
             populateTables(resultTrainList);
-
         }
         else
         {
@@ -75,6 +87,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
         }
 
     }
+
 
     private void populateTables(List<TrainModel> resultTrainList)
     {
@@ -93,17 +106,19 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                     {
                         TableRow trainStop = new TableRow();
 
+                        TableCell trainStopDate = new TableCell();
                         TableCell trainStopDestination = new TableCell();
                         TableCell trainStopTrainNumber = new TableCell();
                         TableCell trainStopTrackNumber = new TableCell();
                         TableCell trainStopTime = new TableCell();
                         TableCell trainStopEstimate = new TableCell();
 
+                        trainStopDate.Text = row.scheduledTime.ToShortDateString();
 
                         // Trains final destination
                         trainStopDestination.Text = resultTrain.timeTableRows.Last<Timetable>().stationShortCode;
 
-                        trainStopTrainNumber.Text = resultTrain.FullTrainName;
+                        trainStopTrainNumber.Text = "<a href='junat?query=" + resultTrain.trainNumber + "'>" + resultTrain.FullTrainName + "</a>";
                         trainStopTrackNumber.Text = row.commercialTrack;
                         trainStopTime.Text = row.scheduledTime.ToShortTimeString();
 
@@ -115,6 +130,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                         }
 
                         // Add the cells in a row
+                        trainStop.Cells.Add(trainStopDate);
                         trainStop.Cells.Add(trainStopDestination);
                         trainStop.Cells.Add(trainStopTrackNumber);
                         trainStop.Cells.Add(trainStopTime);
@@ -162,8 +178,21 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
 
     private string getShortcodeByStation(string stationName)
     {
-        TrafficLocationModel resultStation = trafficLocationService.SelectByStationName(stationName);
+        TrafficLocationModel resultStation = trafficLocationService.SelectByStationName(UppercaseFirst(stationName));
         Debug.WriteLine("AKVR:asemat.aspx.cs:searchTrainsByStation() - resulting station name: " + resultStation.stationName);
         return resultStation.stationShortCode;
+    }
+
+
+    static string UppercaseFirst(string s)
+    {
+        if (string.IsNullOrEmpty(s))
+        {
+            return string.Empty;
+        }
+
+        char[] a = s.ToCharArray();
+        a[0] = char.ToUpper(a[0]);
+        return new string(a);
     }
 }
