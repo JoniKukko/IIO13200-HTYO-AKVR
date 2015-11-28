@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
-
+using System.Net;
 
 namespace AKVR.Services.Operator
 {
     public class OperatorMapper : BaseMapper
     {
-        
+        public OperatorMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
+        {
+        }
+
         public List<OperatorModel> SelectAll()
         {
             List<OperatorModel> Operators;

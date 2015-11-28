@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
-
+using System.Net;
 
 namespace AKVR.Services.TrainType
 {
     public class TrainTypeMapper : BaseMapper
     {
-        
+        public TrainTypeMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
+        {
+        }
+
         public List<TrainTypeModel> SelectAll()
         {
             List<TrainTypeModel> trainTypes;

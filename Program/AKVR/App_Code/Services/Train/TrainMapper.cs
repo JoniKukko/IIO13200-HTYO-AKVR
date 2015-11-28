@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 
 namespace AKVR.Services.Train
 {
@@ -9,6 +10,9 @@ namespace AKVR.Services.Train
 
     public class TrainMapper : BaseMapper
     {
+        public TrainMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
+        {
+        }
 
 
         // Palauttaa mallin junanumeron perusteella

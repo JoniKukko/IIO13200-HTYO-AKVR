@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
-
+using System.Net;
 
 namespace AKVR.Services.Assembly
 {
     public class AssemblyMapper : BaseMapper
     {
+        public AssemblyMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
+        {
+        }
 
         public AssemblyModel SelectByTrainNumber(int trainNumber, string date)
         {

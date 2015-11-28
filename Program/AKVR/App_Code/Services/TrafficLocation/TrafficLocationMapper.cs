@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
-
+using System.Net;
 
 namespace AKVR.Services.TrafficLocation
 {
     public class TrafficLocationMapper : BaseMapper
     {
-        
+        public TrafficLocationMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
+        {
+        }
+
         public List<TrafficLocationModel> SelectAll()
         {
             List<TrafficLocationModel> trafficLocations;
