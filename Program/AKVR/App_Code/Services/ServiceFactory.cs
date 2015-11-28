@@ -3,6 +3,7 @@ using AKVR.Services.Train;
 using AKVR.Services.TrafficLocation;
 using AKVR.Services.Assembly;
 using AKVR.Services.TrainType;
+using AKVR.Services.Operator;
 
 namespace AKVR.Services
 {
@@ -31,6 +32,12 @@ namespace AKVR.Services
         {
             Debug.WriteLine("AKVR:ServiceFactory - New TrainType.Service");
             return new TrainTypeService(new TrainTypeMapper());
+        }
+
+        public static OperatorService Operator()
+        {
+            Debug.WriteLine("AKVR:ServiceFactory - New Operator.Service");
+            return new OperatorService(new OperatorMapper());
         }
 
 
