@@ -18,7 +18,7 @@ namespace AKVR.Services.Assembly
         // ...to here should be in every service class
 
 
-        public AssemblyModel SelectByTrainNumber(int trainNumber, string date = "2015-12-31")
+        public AssemblyModel SelectByTrainNumber(int trainNumber, string date)
         {
             return this.Mapper.SelectByTrainNumber(trainNumber, date);
         }
