@@ -44,11 +44,17 @@ namespace AKVR.Services.Train
         {
             var trainList = this.Mapper.SelectByStationShortCode(shortcode, arrived_trains, arriving_trains, departed_trains, departing_trains);
 
-            trainList = trainList.OrderBy(
-                train => (train.timeTableRows.Find(
-                    row => row.stationShortCode == shortcode
-                    ).scheduledTime)
-            ).ToList();
+            try
+            {
+                trainList = trainList.OrderBy(
+                    train => (train.timeTableRows.Find(
+                        row => row.stationShortCode == shortcode
+                        ).scheduledTime)
+                ).ToList();
+            } catch (Exception ex)
+            {
+                Debug.WriteLine("AKVR: OrderbyShortCode FAILED: " + ex.Message);
+            }
 
             return trainList;
         }
