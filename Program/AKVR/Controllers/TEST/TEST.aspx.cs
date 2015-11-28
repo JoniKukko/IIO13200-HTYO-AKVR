@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using AKVR.Services;
-using AKVR.Services.Train;
-using AKVR.Services.TrafficLocation;
+using System.Linq;
 
 public partial class TEST : System.Web.UI.Page
 {
@@ -10,17 +8,16 @@ public partial class TEST : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-        var service  = ServiceFactory.TrafficLocation();
-        var model = service.SelectByStationName(null);
+        var trainService = ServiceFactory.Train();
+        var trainTypeService = ServiceFactory.TrainType();
+        
+        var trainModel = trainService.SelectByTrainNumber(1);
 
-
-        result.Text = "";
+        var trainTypeList = trainTypeService.SelectAll();
+        var trainTypes = trainTypeList.ToDictionary(x => x.name, x => x.trainCategory.name);
         
-            result.Text = result.Text + model.stationName + " (" + model.stationShortCode + ")<br>";
+        result.Text = trainTypes[trainModel.trainType] + " " + trainModel.trainType + " " + trainModel.trainNumber + " " + trainModel.trainCategory;
         
-        
-        
-
     }
 
 
