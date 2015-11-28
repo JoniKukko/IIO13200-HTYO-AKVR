@@ -2,6 +2,7 @@
 using AKVR.Services.Train;
 using AKVR.Services.TrafficLocation;
 using AKVR.Services.Assembly;
+using AKVR.Services.TrainType;
 
 namespace AKVR.Services
 {
@@ -24,6 +25,12 @@ namespace AKVR.Services
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Assembly.Service");
             return new AssemblyService(new AssemblyMapper());
+        }
+
+        public static TrainTypeService TrainType()
+        {
+            Debug.WriteLine("AKVR:ServiceFactory - New TrainType.Service");
+            return new TrainTypeService(new TrainTypeMapper());
         }
 
 
