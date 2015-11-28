@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AKVR.Services.Train
 {
@@ -11,7 +12,7 @@ namespace AKVR.Services.Train
 
         // date  Junan ensimmäisen lähdön päivämäärä
         public DateTime departureDate { get; set; }
-
+        
         // 1-9999   Junan operoiman operaattorin UIC-koodi
         public int operatorUICCode { get; set; }
 
@@ -39,7 +40,7 @@ namespace AKVR.Services.Train
 
         // Kuvaa saapumisia ja lähtöjä liikennepaikoilta. 
         // Järjestetty reitin mukaiseen järjestykseen.
-        public Timetable[] timeTableRows { get; set; }
+        public List<Timetable> timeTableRows { get; set; }
 
         // kertoo sen mitä tossa lukee
         public int AverageDelay { get; set; }
@@ -98,7 +99,7 @@ namespace AKVR.Services.Train
 
         // Syytiedot. Kuvaavat syitä miksi juna oli myöhässä tai 
         // etuajassa pysähdyksellä. Kaikkia syyluokkia ja -tietoja ei julkaista.
-        public CategoryCode[] causes { get; set; }
+        public List<CategoryCode> causes { get; set; }
 
     }
 

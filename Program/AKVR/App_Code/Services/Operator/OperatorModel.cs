@@ -1,4 +1,6 @@
-﻿namespace AKVR.Services.Operator
+﻿using System.Collections.Generic;
+
+namespace AKVR.Services.Operator
 {
 
     public class OperatorModel
@@ -16,7 +18,7 @@
         public int operatorUICCode { get; set; }
 
         // TrainNumber|none   Operaattorin käytössäolevat junanumeroavaruudet.
-        public TrainNumber[] trainNumbers { get; set; }
+        public List<TrainNumber> trainNumbers { get; set; }
 
     }
 

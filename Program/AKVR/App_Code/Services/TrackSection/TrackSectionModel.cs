@@ -1,4 +1,6 @@
-﻿namespace AKVR.Services.TrackSection
+﻿using System.Collections.Generic;
+
+namespace AKVR.Services.TrackSection
 {
 
     public class TrackSectionModel
@@ -12,7 +14,7 @@
 
         // Raideosuuden sijainnit. Raideosuudella voi olla monta 
         // sijaintia, jos se sijaitsee usealla eri ratanumerolla.
-        public Range[] ranges { get; set; }
+        public List<Range> ranges { get; set; }
     }
 
 
