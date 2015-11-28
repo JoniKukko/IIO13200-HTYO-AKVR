@@ -10,11 +10,14 @@ namespace AKVR.Services
     public static class ServiceFactory
     {
 
+
         public static TrainService Train()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Train.Service");
             return new TrainService(new TrainMapper());
         }
+
+
 
         public static TrafficLocationService TrafficLocation()
         {
@@ -22,11 +25,15 @@ namespace AKVR.Services
             return new TrafficLocationService(new TrafficLocationMapper());
         }
 
+
+
         public static AssemblyService Assembly()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Assembly.Service");
             return new AssemblyService(new AssemblyMapper());
         }
+
+
 
         public static TrainTypeService TrainType()
         {
@@ -34,11 +41,14 @@ namespace AKVR.Services
             return new TrainTypeService(new TrainTypeMapper());
         }
 
+
+
         public static OperatorService Operator()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Operator.Service");
             return new OperatorService(new OperatorMapper());
         }
+
 
 
     }
