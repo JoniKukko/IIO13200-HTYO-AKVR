@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AKVR.Services.Assembly
 {
@@ -27,7 +28,9 @@ namespace AKVR.Services.Assembly
         public long version { get; set; }
 
         // Kuvaa junan yhtä matkaosuutta, joka ajetaan samalla kokoonpanolla 
-        public JourneySection[] journeySections { get; set; }
+        public JourneySection
+            
+            journeySections { get; set; }
 
     }
 
@@ -42,10 +45,10 @@ namespace AKVR.Services.Assembly
         public TimeTableRow endTimeTableRow { get; set; }
 
         // Kokoonpanon veturit
-        public Locomotive[] locomotives { get; set; }
+        public List<Locomotive> locomotives { get; set; }
 
         // Wagon|none   Kokoonpanon vaunut
-        public Wagon[] wagons { get; set; }
+        public List<Wagon> wagons { get; set; }
 
         //  positive integer   junankokonaispituus metreissä
         public int totalLength { get; set; }
