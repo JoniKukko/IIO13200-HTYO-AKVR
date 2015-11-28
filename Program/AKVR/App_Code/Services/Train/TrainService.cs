@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 
 namespace AKVR.Services.Train
 {
@@ -14,7 +14,7 @@ namespace AKVR.Services.Train
 
         public TrainService(TrainMapper mapper)
         {
-            this.Mapper  = mapper;
+            this.Mapper = mapper;
         }
         // ...to here should be in every service class
 
@@ -28,7 +28,7 @@ namespace AKVR.Services.Train
         {
             return this.Mapper.SelectByTrainNumber(trainNumber);
         }
-        
+
 
 
         // nothing special to do..
@@ -40,9 +40,17 @@ namespace AKVR.Services.Train
 
 
 
-        public List<TrainModel> SelectByStationShortCode(string shortcode, string dateTime = "dd.mm.yyyy hh:ii:ss",  int arrived_trains = 5, int arriving_trains = 5, int departed_trains = 5, int departing_trains = 5)
+        public List<TrainModel> SelectByStationShortCode(string shortcode, string dateTime = "dd.mm.yyyy hh:ii:ss", int arrived_trains = 5, int arriving_trains = 5, int departed_trains = 5, int departing_trains = 5)
         {
-            return this.Mapper.SelectByStationShortCode(shortcode, arrived_trains, arriving_trains, departed_trains, departing_trains);
+            var trainList = this.Mapper.SelectByStationShortCode(shortcode, arrived_trains, arriving_trains, departed_trains, departing_trains);
+
+            trainList = trainList.OrderBy(
+                train => (train.timeTableRows.Find(
+                    row => row.stationShortCode == shortcode
+                    ).scheduledTime)
+            ).ToList();
+
+            return trainList;
         }
 
 
