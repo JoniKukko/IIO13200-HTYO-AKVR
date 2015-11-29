@@ -17,32 +17,32 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        tbStationDate.Attributes["placeholder"] = DateTime.Now.ToShortDateString();
-        tbStationTime.Attributes["placeholder"] = DateTime.Now.ToShortTimeString();
 
         stationNames = trafficLocationService.SelectAll().ToDictionary(x => x.stationShortCode, x => x.stationName);
 
         // If URL parameter is given, start search
         if (Request.QueryString["query"] != null && !Page.IsPostBack)
         {
-            searchStations(Request.QueryString["query"], tbStationDate.Text, tbStationTime.Text);
+            searchStations(Request.QueryString["query"]);
         }
     }
 
     protected void btnSearchStations_Click(object sender, EventArgs e)
     {
-        searchStations(tbSearchStations.Text, tbStationDate.Text, tbStationTime.Text);
+        searchStations(tbSearchStations.Text);
     }
 
-
-    private string parseDateAndTimeString(string date, string time)
+    /*
+    private DateTime parseDateAndTimeString(string date, string time)
     {
-        string parsedDateAndTime = DateTime.Now.ToString("dd.MM.yyyy hh:mm:ss");
+        // Also parses string, used in testing
+        DateTime dt = DateTime.Now;
+        string parsedDateAndTime = dt.ToString("dd.MM.yyyy hh:mm:ss");
         Debug.WriteLine("AKVR datetimestring Now()- " + parsedDateAndTime);
 
         try
         {
-            DateTime dt = Convert.ToDateTime(date + " " + time);
+            dt = Convert.ToDateTime(date + " " + time);
             parsedDateAndTime = dt.ToString();
             Debug.WriteLine("AKVR datetimestring parsed - " + parsedDateAndTime);
         }
@@ -52,26 +52,13 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
             labelStation.Text = "Anna päivämäärä ja aika muodossa pp.kk.vvvv hh.mm";
         }
 
-        return parsedDateAndTime;
+        return dt;
     }
+    */
 
-
-    private void searchStations(string query, string date, string time)
+    private void searchStations(string query)
     {
         Debug.WriteLine("AKVR - query = " + query);
-
-        string timeQueryString = DateTime.Now.ToString();
-
-        // Check that both date and time fields have something in them
-        if (!(string.IsNullOrWhiteSpace(tbStationDate.Text) || string.IsNullOrWhiteSpace(tbStationTime.Text)))
-        {
-            labelStation.Text = "";
-            timeQueryString = parseDateAndTimeString(date, time);
-        }
-        else
-        {
-            labelStation.Text = "";
-        }
 
         Session["StationShortcode"] = getShortcodeByStation(query);
         Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - shortcode: " + (string)Session["StationShortcode"]);
@@ -80,9 +67,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
 
         if ((string)Session["StationShortcode"] != "")
         {
-            Debug.WriteLine("AKVR datetimestring when sending - " + timeQueryString);
-            // Tällä sitten jos vielä tekis jotain
-            resultTrainList = trainService.SelectByStationShortCode((string)Session["StationShortcode"], timeQueryString);
+            resultTrainList = trainService.SelectByStationShortCode((string)Session["StationShortcode"]);
 
             populateTables(resultTrainList);
         }
@@ -166,6 +151,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
             {
                 // Fails if returned train is empty, aka no trains found
                 labelStation.Text = "Asemia ei löytynyt.";
+                Debug.WriteLine("AKVR: populateTables() - " + ex.Message);
             }
         }
     }

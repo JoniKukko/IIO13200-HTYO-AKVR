@@ -1,0 +1,3 @@
+Huomio viewien taulukoista:
+
+dataa k‰sitell‰‰n v‰h‰n palikkamaisella tavalla, mutta edistyneemm‰t keinot kuten repeaterit olisivat tuottaneet kinkkisi‰ ongelmia, kun esitett‰v‰ data tulee sis‰kk‰isten listojen muodossa, ja lis‰ksi esimerkiksi shortcode-kenttien arvot haluttiin n‰ytt‰‰ asemien oikeina nimin‰.

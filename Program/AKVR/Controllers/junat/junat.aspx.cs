@@ -93,8 +93,7 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
             {
                 Debug.WriteLine("AKVR:junat.aspx.cs:searchTrains() - searchTrainByNumber(int) - returned empty train");
                 labelTrain.Text = "Junia ei löytynyt.";
-            }
-            
+            }            
         }
         // If search query is not number; station name
         else
@@ -121,8 +120,6 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
                 Debug.WriteLine("AKVR:junat.aspx.cs:searchTrains() - searchTrainsByStation() returned empty list");
             }
         }
-
-        
     }
 
 
