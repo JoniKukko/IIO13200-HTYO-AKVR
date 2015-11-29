@@ -19,12 +19,12 @@
                     <div class="col-sm-3 col-md-2 sidebar">
                         <ul class="nav nav-sidebar">
                             <li>
-                                <asp:Image CssClass="logo-image" ImageUrl="~/Images/logo.JPG" runat="server" />
+                                <asp:Image CssClass="logo-image" ImageUrl="~/Images/logo3.jpg" runat="server" style="width: 70%"/>
                             </li>
-                            <li><a href="../../etusivu">Etusivu</a></li>
-                            <li><a href="../../junat">Junat</a></li>
+                            <li><a href="/etusivu">Etusivu</a></li>
+                            <li><a href="/junat">Junat</a></li>
                             <li><a href="/asemat">Asemat</a></li>
-                            <li><a href="#">Tilastot</a></li>
+                            <li><a href="/tilastot">Tilastot</a></li>
                         </ul>
                     </div>
                 </div>
@@ -37,11 +37,5 @@
             </div>
         </div>
     </form>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
-    <!--<script src="../../Styles/js/bootstrap.min.js"></script>-->
 </body>
 </html>

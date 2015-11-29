@@ -4,15 +4,15 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContentHolder" Runat="Server">
     <h1 class="page-header">Asemien aikataulut</h1>
-    <div class="input-group col-sm-6 col-md-12">
-        <asp:TextBox ID="tbSearchStations" CssClass="search-query form-control" runat="server" placeholder="Kirjoita aseman nimi tai aseman tunnus"></asp:TextBox>
+    <div class="input-group col-sm-12">
+        <asp:TextBox ID="tbSearchStations" CssClass="search-query form-control col-sm-6" runat="server" placeholder="Kirjoita aseman nimi tai aseman tunnus"></asp:TextBox>
         <span class="input-group-btn">
             <asp:Button ID="btnSearchStations" CssClass="btn btn-success train-search-button" runat="server" Text="Etsi" OnClick="btnSearchStations_Click"/>
         </span>
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-3">
             <asp:TextBox ID="tbStationDate" CssClass="search-query form-control short-textbox" runat="server"></asp:TextBox>
         </div>
-        <div class="col-sm-3 col-md-3">
+        <div class="col-sm-3">
             <asp:TextBox ID="tbStationTime" CssClass="search-query form-control short-textbox" runat="server"></asp:TextBox>
         </div>
     </div>
