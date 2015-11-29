@@ -59,7 +59,29 @@ namespace AKVR.Services.Train
             return trains;
         }
 
-        
+
+
+        public List<TrainModel> SelectAllFromHistory(DateTime datetime)
+        {
+            List<TrainModel> trains;
+            try
+            {
+                Debug.WriteLine("AKVR:SelectAllByDate");
+                // Haetaan json
+                string json = this.getJSON("history?date="+datetime.ToString("yyyy-MM-dd"), true, 3600);
+                // yritetään deserialisoida
+                trains = JsonConvert.DeserializeObject<List<TrainModel>>(json);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("AKVR:SelectAllByDate FAILED: " + ex.Message);
+                // palautetaan ainakin tyhjä sitten..
+                trains = new List<TrainModel>();
+            }
+            return trains;
+        }
+
+
 
         public List<TrainModel> SelectByStationShortCode(string shortcode, int arrived_trains, int arriving_trains, int departed_trains, int departing_trains)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using AKVR.Services;
 using System.Linq;
+using System.Diagnostics;
 
 public partial class TEST : System.Web.UI.Page
 {
@@ -9,14 +10,46 @@ public partial class TEST : System.Web.UI.Page
     {
 
         var trainService = ServiceFactory.Train();
-        var trainTypeService = ServiceFactory.TrainType();
-        
-        var trainModel = trainService.SelectByTrainNumber(1);
+        var trainList = trainService.SelectCausesByDate(DateTime.Now.AddDays(-1));
 
-        var trainTypeList = trainTypeService.SelectAll();
-        var trainTypes = trainTypeList.ToDictionary(x => x.name, x => x.trainCategory.name);
+        var reasonCategoryService = ServiceFactory.ReasonCategory();
+        var reasonCategoryList = reasonCategoryService.SelectAll();
+        var reasonCategorys = reasonCategoryList.ToDictionary(x => x.categoryCode.ToString(), x => x.categoryName.ToString());
+
+        var reasonCodeService = ServiceFactory.ReasonCode();
+        var reasonCodeList = reasonCodeService.SelectAll();
+        var reasonCodes = reasonCodeList.ToDictionary(x => x.detailedCategoryCode.ToString(), x => x.detailedCategoryName.ToString());
+
+        var trafficLocationService = ServiceFactory.TrafficLocation();
+        var trafficLocationList = trafficLocationService.SelectAll();
+        var trafficLocations = trafficLocationList.ToDictionary(x => x.stationShortCode, x => x.stationName);
+
+
+
+        result.Text = "";
+
+        foreach (var train in trainList)
+        {
+            result.Text += train.FullTrainName + "<br>";
+            foreach (var row in train.timeTableRows)
+            {
+                result.Text += "- " + trafficLocations[row.stationShortCode] + " ";
+                foreach (var cause in row.causes)
+                {
+                    result.Text += "(" 
+                        + (cause.categoryCode != null ? reasonCategorys[cause.categoryCode] : null)
+                        + ": "
+                        + (cause.detailedCategoryCode != null ? reasonCodes[cause.detailedCategoryCode] : null)
+                        + ") ";
+                }
+                result.Text += "<br>";
+            }
+
+        }
+
+
+
         
-        result.Text = trainTypes[trainModel.trainType] + " " + trainModel.trainType + " " + trainModel.trainNumber + " " + trainModel.trainCategory;
         
     }
 

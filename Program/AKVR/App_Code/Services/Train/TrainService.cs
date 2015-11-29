@@ -60,6 +60,17 @@ namespace AKVR.Services.Train
         }
 
 
+        public List<TrainModel> SelectCausesByDate(DateTime datetime)
+        {
+            var trainList = this.Mapper.SelectAllFromHistory(datetime);
+
+            trainList = trainList.FindAll(train => (train.timeTableRows = train.timeTableRows.FindAll(row => row.causes != null)).Count != 0);
+
+            return trainList;
+        }
+
+
+
 
     }
 
