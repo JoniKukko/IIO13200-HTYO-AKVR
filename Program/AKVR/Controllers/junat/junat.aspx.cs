@@ -19,13 +19,16 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        stationNames = populateStationNameList();
+        stationNames = trafficLocationService.SelectAll().ToDictionary(x => x.stationShortCode, x => x.stationName);
 
         // If URL parameter is given, start search
         if (Request.QueryString["query"] != null && !Page.IsPostBack)
         {
             searchTrains(Request.QueryString["query"]);
+            Debug.WriteLine("HAKUSANA " + Request.QueryString["query"]);
         }
+
+        
     }
 
 
@@ -107,6 +110,9 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
                 dlTrains.DataSource = resultTrainList;
                 dlTrains.DataValueField = "FullTrainName";
                 dlTrains.DataBind();
+
+                var list = (List<TrainModel>)Session["resultTrainList"];
+                updateTrainInfo((TrainModel)list[dlTrains.SelectedIndex]);
                 labelTrain.Text = "";
 
             } else
@@ -208,18 +214,6 @@ public partial class Controllers_junat_junat : System.Web.UI.Page
         var list = (List<TrainModel>)Session["resultTrainList"];
         Debug.WriteLine("AKVR:junat.aspx.cs:dlTrains_SelectedIndexChanged() - Session['resultTrainList'][selectedIndex].FullTrainName " + list[dlTrains.SelectedIndex].FullTrainName);
         updateTrainInfo((TrainModel)list[dlTrains.SelectedIndex]);
-    }
-
-    private Dictionary<string, string> populateStationNameList()
-    {
-        List<TrafficLocationModel> allStations = trafficLocationService.SelectAll();
-        Dictionary<string, string> stationNames = new Dictionary<string, string>();
-        foreach (var location in allStations)
-        {
-            stationNames.Add(location.stationShortCode, location.stationName);
-        }
-
-        return stationNames;
     }
 
     static string UppercaseFirst(string s)
