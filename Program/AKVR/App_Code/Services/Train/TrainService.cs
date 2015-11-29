@@ -40,17 +40,20 @@ namespace AKVR.Services.Train
 
 
 
-        public List<TrainModel> SelectByStationShortCode(string shortcode, string dateTime = "dd.mm.yyyy hh:ii:ss", int arrived_trains = 5, int arriving_trains = 5, int departed_trains = 5, int departing_trains = 5)
+        public List<TrainModel> SelectByStationShortCode(string shortcode, int arrived_trains = 10, int arriving_trains = 10, int departed_trains = 10, int departing_trains = 10)
         {
             var trainList = this.Mapper.SelectByStationShortCode(shortcode, arrived_trains, arriving_trains, departed_trains, departing_trains);
 
             try
             {
+                // järjestetään sen mukaan milloin on annetulla asemalla
                 trainList = trainList.OrderBy(
                     train => (train.timeTableRows.Find(
                         row => row.stationShortCode == shortcode
                         ).scheduledTime)
                 ).ToList();
+
+
             } catch (Exception ex)
             {
                 Debug.WriteLine("AKVR: OrderbyShortCode FAILED: " + ex.Message);
@@ -58,6 +61,7 @@ namespace AKVR.Services.Train
 
             return trainList;
         }
+
 
 
         public List<TrainModel> SelectCausesByDate(DateTime datetime)
