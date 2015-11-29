@@ -13,11 +13,14 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
 {
     TrainService trainService = AKVR.Services.ServiceFactory.Train();
     TrafficLocationService trafficLocationService = AKVR.Services.ServiceFactory.TrafficLocation();
+    Dictionary<string, string> stationNames;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         tbStationDate.Attributes["placeholder"] = DateTime.Now.ToShortDateString();
         tbStationTime.Attributes["placeholder"] = DateTime.Now.ToShortTimeString();
+
+        stationNames = trafficLocationService.SelectAll().ToDictionary(x => x.stationShortCode, x => x.stationName);
 
         // If URL parameter is given, start search
         if (Request.QueryString["query"] != null && !Page.IsPostBack)
@@ -55,6 +58,8 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
 
     private void searchStations(string query, string date, string time)
     {
+        Debug.WriteLine("AKVR - query = " + query);
+
         string timeQueryString = DateTime.Now.ToString();
 
         // Check that both date and time fields have something in them
@@ -68,16 +73,16 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
             labelStation.Text = "";
         }
 
-        Session["shortcode"] = getShortcodeByStation(query);
-        Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - shortcode: " + (string)Session["shortcode"]);
+        Session["StationShortcode"] = getShortcodeByStation(query);
+        Debug.WriteLine("AKVR.asemat.aspx.cs:searchStations() - shortcode: " + (string)Session["StationShortcode"]);
 
         List<TrainModel> resultTrainList;
 
-        if ((string)Session["shortcode"] != "")
+        if ((string)Session["StationShortcode"] != "")
         {
             Debug.WriteLine("AKVR datetimestring when sending - " + timeQueryString);
             // Tällä sitten jos vielä tekis jotain
-            resultTrainList = trainService.SelectByStationShortCode((string)Session["shortcode"], timeQueryString);
+            resultTrainList = trainService.SelectByStationShortCode((string)Session["StationShortcode"], timeQueryString);
 
             populateTables(resultTrainList);
         }
@@ -102,7 +107,7 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                 foreach (var row in resultTrain.timeTableRows)
                 {
 
-                    if (row.stationShortCode == (string)Session["shortcode"])
+                    if (row.stationShortCode == (string)Session["StationShortcode"])
                     {
                         TableRow trainStop = new TableRow();
 
@@ -116,9 +121,18 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                         trainStopDate.Text = row.scheduledTime.ToShortDateString();
 
                         // Trains final destination
-                        trainStopDestination.Text = resultTrain.timeTableRows.Last<Timetable>().stationShortCode;
+                        //trainStopDestination.Text = resultTrain.timeTableRows.Last<Timetable>().stationShortCode;
+                        var station = stationNames[resultTrain.timeTableRows.Last<Timetable>().stationShortCode];
+                        trainStopDestination.Text = "<a href='asemat?query=" +
+                                                    station +
+                                                    "'>" +
+                                                    station;
 
-                        trainStopTrainNumber.Text = "<a href='junat?query=" + resultTrain.trainNumber + "'>" + resultTrain.FullTrainName + "</a>";
+                        trainStopTrainNumber.Text = "<a href='junat?query=" + 
+                                                    resultTrain.trainNumber + 
+                                                    "'>" + 
+                                                    resultTrain.FullTrainName + 
+                                                    "</a>";
                         trainStopTrackNumber.Text = row.commercialTrack;
                         trainStopTime.Text = row.scheduledTime.ToShortTimeString();
 
@@ -153,26 +167,6 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
                 // Fails if returned train is empty, aka no trains found
                 labelStation.Text = "Asemia ei löytynyt.";
             }
-            /*
-            for (int i = 0; i < resultTrain.timeTableRows.Count() - 1; i++)
-            {
-                // If the train stops
-                if (resultTrain.timeTableRows[i].type == "Arrival")
-                {
-                    trainStopDestination.Text = resultTrain.timeTableRows[i].stationShortCode;
-                    trainStopTrackNumber.Text = resultTrain.timeTableRows[i].commercialTrack;
-                    trainStopTime.Text = resultTrain.timeTableRows[i].scheduledTime.ToShortTimeString();
-                    // Check if the train is arriving or departuring
-
-                    // Add the cells in a row
-                    trainStop.Cells.Add(trainStopDestination);
-                    trainStop.Cells.Add(trainStopTrackNumber);
-                    trainStop.Cells.Add(trainStopTime);
-
-                    tableArrivingTrains.Rows.Add(trainStop);
-                }
-            }
-            */
         }
     }
 
