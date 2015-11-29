@@ -66,7 +66,7 @@ namespace AKVR.Services.Train
             List<TrainModel> trains;
             try
             {
-                Debug.WriteLine("AKVR:SelectAllByDate");
+                Debug.WriteLine("AKVR:SelectAllFromHistory");
                 // Haetaan json
                 string json = this.getJSON("history?date="+datetime.ToString("yyyy-MM-dd"), true, 3600);
                 // yritetään deserialisoida
@@ -74,7 +74,7 @@ namespace AKVR.Services.Train
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("AKVR:SelectAllByDate FAILED: " + ex.Message);
+                Debug.WriteLine("AKVR:SelectAllFromHistory FAILED: " + ex.Message);
                 // palautetaan ainakin tyhjä sitten..
                 trains = new List<TrainModel>();
             }

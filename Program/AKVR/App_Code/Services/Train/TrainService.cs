@@ -64,7 +64,38 @@ namespace AKVR.Services.Train
         {
             var trainList = this.Mapper.SelectAllFromHistory(datetime);
 
-            trainList = trainList.FindAll(train => (train.timeTableRows = train.timeTableRows.FindAll(row => row.causes != null)).Count != 0);
+            trainList = trainList.FindAll(
+                train => (train.timeTableRows = train.timeTableRows.FindAll(
+                    row => row.causes != null
+                    )).Count != 0
+                );
+
+            return trainList;
+        }
+
+
+        public List<TrainModel> SelectDelaysBetweenDates(DateTime from, DateTime to)
+        {
+            List<TrainModel> trainList = new List<TrainModel>();
+
+            for (DateTime date = from; date <= to; date = date.AddDays(1))
+            {
+                Debug.WriteLine("Date: " + date.ToString("yyyy-MM-dd"));
+                trainList.AddRange(this.Mapper.SelectAllFromHistory(date));
+            }
+
+            trainList.ForEach(
+                train => {
+                    train.AverageDelay = (int)train.timeTableRows.Average(
+                        row => row.differenceInMinutes
+                        );
+                    train.MaxDelay = (int)train.timeTableRows.Max(
+                        row => row.differenceInMinutes
+                        );
+                });
+
+            trainList = trainList.OrderByDescending(train => train.AverageDelay).ToList();
+
 
             return trainList;
         }
