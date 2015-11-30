@@ -64,6 +64,9 @@ namespace AKVR.Services.Train
         //  string  Aseman lyhennekoodi
         public string stationShortCode { get; set; }
 
+        //  string  Aseman lyhennekoodi
+        public string stationName { get; set; }
+
         // 1-9999  Aseman UIC-koodi
         public int stationcUICCode { get; set; }
 
