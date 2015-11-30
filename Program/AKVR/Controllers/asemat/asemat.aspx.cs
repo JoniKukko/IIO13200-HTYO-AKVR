@@ -75,7 +75,6 @@ public partial class Controllers_asemat_asemat : System.Web.UI.Page
         {
             labelStation.Text = "Asemia ei löytynyt.";
         }
-
     }
 
 
