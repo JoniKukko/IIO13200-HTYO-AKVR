@@ -30,8 +30,8 @@ public partial class Controllers_tilastot_tilastot : System.Web.UI.Page
 
         try
         {
-            from = DateTime.ParseExact(tbDelayFrom.Text, "dd.MM.yyyy", new CultureInfo("fi-FI"));
-            to = DateTime.ParseExact(tbDelayTo.Text, "dd.MM.yyyy", new CultureInfo("fi-FI"));
+            from = DateTime.ParseExact(tbDelayFrom.Text, "d.MM.yyyy", new CultureInfo("fi-FI"));
+            to = DateTime.ParseExact(tbDelayTo.Text, "d.MM.yyyy", new CultureInfo("fi-FI"));
 
             TimeSpan difference = to - from;
 
@@ -51,6 +51,8 @@ public partial class Controllers_tilastot_tilastot : System.Web.UI.Page
         
     }
 
+    // Get delayed trains by dates
+    // Set the datasource of the table
     protected void displayDelayedTrains(DateTime from, DateTime to)
     {
         Debug.WriteLine("AKVR: from - " + from + " to - " + to);

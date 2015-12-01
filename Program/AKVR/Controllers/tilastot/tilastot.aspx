@@ -26,7 +26,7 @@
             <div class="col-sm-12">
                 <asp:Repeater ID="repeaterDelayedTrains" runat="server">
                     <HeaderTemplate>
-                        <table class="table table-striped">
+                        <table class="spacer-top-md table table-striped">
                             <tr>
                                 <td>Juna</td>
                                 <td>Lähtöpäivä</td>
