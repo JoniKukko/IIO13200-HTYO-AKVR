@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Configuration;
-using System.Web;
 using System.Text;
+
+
 
 namespace AKVR.Services
 {
-    
+
     public abstract class BaseMapper : WebClient
     {
         
@@ -23,29 +22,32 @@ namespace AKVR.Services
         private SessionClient sessionClient;
 
 
+
         public BaseMapper (WebClient webClient, LocalClient localClient, SessionClient sessionClient)
         {
-
             this.webClient = webClient;
             this.localClient = localClient;
             this.sessionClient = sessionClient;
-
+            
             this.webClient.Encoding = UTF8Encoding.UTF8;
         }
         
 
+
         // hakee jsonin annetusta urlista
+        // voidaan määrittää palautetaanko taulukkona
+        // voidaan määrittää välimuistin aika
         protected string getJSON(string address, bool returnArray = true, int cacheTime = 10)
         {
 
             string json = "";
             
-
-            if (this.sessionClient.Check(address))
+            // Tarkistetaan mistä json pitäisi hakea
+            if (this.sessionClient.Check(address)) // session
                 json = this.DownloadFromSession(address);
-            else if (this.fromWeb)
+            else if (this.fromWeb) // web
                 json = this.DownloadFromWeb(address, cacheTime);
-            else 
+            else  // local
                 json = this.DownloadFromLocal(address);
             
 
@@ -57,6 +59,7 @@ namespace AKVR.Services
             }
             
 
+            // palautetaan pyydetyssä muodossa
             return (returnArray) 
                 ? this.addArray(json) 
                 : this.stripArray(json);
@@ -64,18 +67,17 @@ namespace AKVR.Services
 
 
 
+        // ladataan json sessionista
         private string DownloadFromSession(string path)
         {
-
             Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from SESSION (" + path + ")");
             return this.sessionClient.DownloadString(path);
         }
 
 
-
+        // ladataan json vr:n palvelusta
         private string DownloadFromWeb(string path, int cacheTime)
         {
-
             Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from WEB (" + this.VRbaseurl + path + ")");
             string json = this.webClient.DownloadString(this.VRbaseurl + path);
             this.sessionClient.Add(path, json, cacheTime);
@@ -83,10 +85,9 @@ namespace AKVR.Services
         }
 
 
-
+        // ladataan json localista
         private string DownloadFromLocal(string path)
         {
-
             path = this.Localbaseurl + (new Regex("/|=|\\?")).Replace(path, "-") + ".json";
             Debug.WriteLine("AKVR:BaseMapper - Downloading JSON from LOCAL (" + path + ")");
             return this.localClient.DownloadString(path);
@@ -98,17 +99,15 @@ namespace AKVR.Services
         // simppeli metodi karsimaan se YMPÄRILTÄ pois
         private string stripArray(string json)
         {
-
             return (json[0] == '[')
                 ? json.Substring(1, json.Length - 2)
                 : json;
         }
 
 
-
+        // voidaan varmistaa että data on taulukkona jos se niin halutaan ulos tulevan
         private string addArray(string json)
         {
-
             return (json[0] != '[')
                 ? '[' + json + ']'
                 : json;

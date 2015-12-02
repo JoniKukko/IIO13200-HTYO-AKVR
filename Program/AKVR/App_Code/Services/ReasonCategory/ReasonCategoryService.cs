@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 
 namespace AKVR.Services.ReasonCategory
@@ -18,7 +14,9 @@ namespace AKVR.Services.ReasonCategory
         }
         // ...to here should be in every service class
 
+        
 
+        // Nothing special to do, passing call to mapper
         public List<ReasonCategoryModel> SelectAll()
         {
             return this.Mapper.SelectAll();

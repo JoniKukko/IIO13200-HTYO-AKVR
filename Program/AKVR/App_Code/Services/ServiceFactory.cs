@@ -8,12 +8,17 @@ using AKVR.Services.ReasonCategory;
 using AKVR.Services.ReasonCode;
 using System.Net;
 
+
+
+/**
+ * Factory pattern for services
+ */
 namespace AKVR.Services
 {
     public static class ServiceFactory
     {
 
-
+        // Train service
         public static TrainService Train()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Train.Service");
@@ -22,6 +27,7 @@ namespace AKVR.Services
 
 
 
+        // TrafficLocation service
         public static TrafficLocationService TrafficLocation()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New TrafficLocation.Service");
@@ -30,6 +36,7 @@ namespace AKVR.Services
 
 
 
+        // Assembly service
         public static AssemblyService Assembly()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Assembly.Service");
@@ -38,6 +45,7 @@ namespace AKVR.Services
 
 
 
+        // TrainType service
         public static TrainTypeService TrainType()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New TrainType.Service");
@@ -46,6 +54,7 @@ namespace AKVR.Services
 
 
 
+        // Operator service
         public static OperatorService Operator()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New Operator.Service");
@@ -54,6 +63,7 @@ namespace AKVR.Services
 
 
 
+        // ReasonCategory service
         public static ReasonCategoryService ReasonCategory()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New ReasonCategory.Service");
@@ -61,14 +71,12 @@ namespace AKVR.Services
         }
 
 
-
+        // ReasonCode service
         public static ReasonCodeService ReasonCode()
         {
             Debug.WriteLine("AKVR:ServiceFactory - New ReasonCategory.Service");
             return new ReasonCodeService(new ReasonCodeMapper(new WebClient(), new LocalClient(), new SessionClient()));
         }
-
-
-
+        
     }
 }

@@ -6,13 +6,14 @@ using System.Net;
 
 namespace AKVR.Services.Train
 {
-
-
     public class TrainMapper : BaseMapper
     {
+
+        // heitetään factoryltä tulevat clientit basemapperille
         public TrainMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
         {
         }
+
 
 
         // Palauttaa mallin junanumeron perusteella
@@ -39,9 +40,13 @@ namespace AKVR.Services.Train
         }
 
 
+
+        // haetaan kaikki mitä vr:ltä löytyy
         public List<TrainModel> SelectAll()
         {
+            // palautusarvo
             List<TrainModel> trains;
+
             try
             {
                 Debug.WriteLine("AKVR:SelectAll");
@@ -53,17 +58,21 @@ namespace AKVR.Services.Train
             catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:SelectAll FAILED: " + ex.Message);
-                // palautetaan ainakin tyhjä sitten..
+                // palautetaan ainakin tyhjä jos epäonnistutaan
                 trains = new List<TrainModel>();
             }
+
             return trains;
         }
 
 
 
+        // hakee kaiken annetun päivän mukaan
         public List<TrainModel> SelectAllFromHistory(DateTime datetime)
         {
+            // palautusarvo
             List<TrainModel> trains;
+
             try
             {
                 Debug.WriteLine("AKVR:SelectAllFromHistory");
@@ -75,14 +84,16 @@ namespace AKVR.Services.Train
             catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:SelectAllFromHistory FAILED: " + ex.Message);
-                // palautetaan ainakin tyhjä sitten..
+                // palautetaan ainakin tyhjä jos epäonnistuu
                 trains = new List<TrainModel>();
             }
+
             return trains;
         }
 
 
 
+        // haetaan aseman lyhenteen perusteella saapuvat, saapuneet, lähtevät ja lähteneet junat
         public List<TrainModel> SelectByStationShortCode(string shortcode, int arrived_trains, int arriving_trains, int departed_trains, int departing_trains)
         {
             List<TrainModel> trains;
@@ -96,14 +107,12 @@ namespace AKVR.Services.Train
             catch (Exception ex)
             {
                 Debug.WriteLine("AKVR:SelectByStationShortCode FAILED: " + ex.Message);
-                // palautetaan ainakin tyhjä sitten..
+                // palautetaan ainakin tyhjä lista..
                 trains = new List<TrainModel>();
             }
+
             return trains;
         }
-
-
+        
     }
-
-
 }

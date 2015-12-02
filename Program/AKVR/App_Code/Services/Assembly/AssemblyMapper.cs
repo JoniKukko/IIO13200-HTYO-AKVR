@@ -1,19 +1,21 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Web;
 using System.Net;
 
 namespace AKVR.Services.Assembly
 {
     public class AssemblyMapper : BaseMapper
     {
+
+        // heitetään factoryltä tulevat clientit basemapperille
         public AssemblyMapper(WebClient webClient, LocalClient localClient, SessionClient sessionClient) : base(webClient, localClient, sessionClient)
         {
         }
 
+
+
+        // hakee yhden mallin junanumeron ja lähtöpäivän mukaan
         public AssemblyModel SelectByTrainNumber(int trainNumber, string date)
         {
             // palautusarvo
@@ -28,13 +30,12 @@ namespace AKVR.Services.Assembly
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("AKVR:AssemblyMapper:SelectByTrainNumber FAILED: " + ex.Message);
+                Debug.WriteLine("AKVR:SelectByTrainNumber FAILED: " + ex.Message);
                 // palautetaan ainakin tyhjä sitten..
                 assembly = new AssemblyModel();
             }
             return assembly;
         }
-
-
+        
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-
-namespace AKVR.Services.Assembly
+﻿namespace AKVR.Services.Assembly
 {
     public class AssemblyService
     {
@@ -18,6 +12,7 @@ namespace AKVR.Services.Assembly
         // ...to here should be in every service class
 
 
+        // Nothing to do, passing call to mapper
         public AssemblyModel SelectByTrainNumber(int trainNumber, string date)
         {
             return this.Mapper.SelectByTrainNumber(trainNumber, date);

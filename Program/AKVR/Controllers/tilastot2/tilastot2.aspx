@@ -8,7 +8,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="mainContentHolder" Runat="Server">
 <div class="col-sm-12">
 
-
+    <!-- OTSIKKO -->
     <div class="row">
         <div class="col-sm-12">
             <div class="page-header">
@@ -18,7 +18,7 @@
     </div>
 
 
-
+    <!-- PVM KENTTÄ JA HAKUPAINIKE -->
     <div class="row">
         <div class="col-sm-12">
             <div class="form-inline">
@@ -32,7 +32,7 @@
     </div>
 
 
-
+    <!-- TULOS TAULUKKO -->
     <div class="row spacer-top-md">
         <div class="col-sm-12">
             <asp:table runat="server" ID="table_trainData" CssClass="table table-bordered">
