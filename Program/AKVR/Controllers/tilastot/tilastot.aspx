@@ -7,16 +7,17 @@
     <p>Myöhästymistilastot kertovat, kuinka hyvin junat ovat olleet ajallaan tiettynä aikavälinä. Jos annat molempiin päivämääräkenttiin saman päivän, saat yhden päivän tiedot.</p>
     <p>Keskimäärin myöhässä -sarake kertoo, kuinka paljon juna on keskimäärin ollut matkan aikana myöhässä. Tähän vaikuttaa muun muassa se, jos juna on lähtenyt aluksi ajallaan, tai jos se on saanut aikataulua kiinni.</p>
     <p>Enimmillään myöhässä -sarake kertoo, kuinka paljon juna oli myöhässä sillä liikennepaikkavälillä, jolta se myöhästyi eniten.</p>
+    <p>Haku palauttaa paljon tuloksia ja saattaa kestää jopa minuutin.</p>
     <div class="col-sm-12">
         <div class="row">
             <div class="form-inline col-sm-12">
                 <div class="form-group">
                     <label for="labelFromDate">Alkupäivä: </label>
-                    <asp:TextBox ID="tbDelayFrom" runat="server" CssClass="form-control" placeholder="5.10.2015"></asp:TextBox>
+                    <asp:TextBox ID="tbDelayFrom" runat="server" CssClass="form-control" type="date" value="2015-12-01"></asp:TextBox>
                 </div>
                 <div class="form-group">
                     <label for="labelToDate">Loppupäivä: </label>
-                    <asp:TextBox ID="tbDelayTo" runat="server" CssClass="form-control" placeholder="6.10.2015"></asp:TextBox>
+                    <asp:TextBox ID="tbDelayTo" runat="server" CssClass="form-control" type="date" value="2015-12-02"></asp:TextBox>
                 </div>
                 <asp:Button ID="btnSearchDelayedTrains" runat="server" Text="Hae" CssClass="btn btn-success train-search-button" OnClick="btnSearchDelayedTrains_Click" />
             </div>

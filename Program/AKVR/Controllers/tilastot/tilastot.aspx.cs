@@ -25,28 +25,22 @@ public partial class Controllers_tilastot_tilastot : System.Web.UI.Page
     {
         labelDelay.Text = "";
 
-        DateTime from = DateTime.Now;
-        DateTime to = DateTime.Now;
+        DateTime from = DateTime.Parse(tbDelayFrom.Text);
+        DateTime to = DateTime.Parse(tbDelayTo.Text);
 
-        try
+        TimeSpan difference = to - from;
+
+        // To make sure user doesn't give too large difference in days,
+        // otherwise it takes zillion hours to complete or crashes
+        if (difference.Days <= 5)
         {
-            from = DateTime.ParseExact(tbDelayFrom.Text, "d.MM.yyyy", new CultureInfo("fi-FI"));
-            to = DateTime.ParseExact(tbDelayTo.Text, "d.MM.yyyy", new CultureInfo("fi-FI"));
-
-            TimeSpan difference = to - from;
-
-            // To make sure user doesn't give too large difference in days,
-            // otherwise it takes zillion hours to complete or crashes
-            if (difference.Days <= 5)
-            {
-                displayDelayedTrains(from, to);
-            }
+            displayDelayedTrains(from, to);
         }
-        catch (Exception ex)
+        else
         {
-            labelDelay.Text = "Anna päivämäärät muodossa pp.kk.vvvv. Päivämäärien ero ei saa olla yli viittä päivää.";
-            Debug.WriteLine("AKVR: btnSearchDelayedTrains_Click() - " + ex.Message);
+            labelDelay.Text = "Päivämäärien ero ei saa olla yli viittä päivää.";
         }
+        
 
         
     }
